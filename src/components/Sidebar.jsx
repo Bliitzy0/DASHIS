@@ -18,7 +18,7 @@ export function Sidebar({ onGenerarReporte }) {
   useEffect(() => {
     const cargarCatalogos = async () => {
       try {
-        const respuesta = await fetch("http://127.0.0.1:8000/api/catalogos");
+        const respuesta = await fetch("http://10.52.9.44:8000/api/catalogos");
         const data = await respuesta.json();
         const formatear = (arr) => arr.map(item => ({ value: item, label: item }));
 
@@ -85,12 +85,19 @@ export function Sidebar({ onGenerarReporte }) {
     // 🎨 CAMBIO PRINCIPAL: Fondo blanco puro con línea separadora gris a la derecha
     <div className="w-[340px] h-screen bg-white border-r border-gray-200 p-8 flex flex-col z-20 overflow-y-auto custom-scrollbar shrink-0">
       
-      {/* 🏢 LOGO TIPO ISS - Adaptado a fondo blanco */}
+     {/* 🏢 LOGO TIPO ISS - Imagen y Texto */}
       <div className="mb-10">
-        <h2 className="text-[#000638] text-3xl font-light tracking-tight flex items-center gap-2">
-          <span className="font-bold text-[#00A4E4]">ISS</span> Filtros
-        </h2>
-        <div className="h-1 w-12 bg-[#00A4E4] mt-4"></div>
+        <div className="flex items-center gap-3">
+          <img 
+            src="/ISSL.png" 
+            alt="Logo ISS" 
+            className="h-14 w-auto object-contain" 
+          />
+          <span className="text-[#000638] text-3xl font-light tracking-tight">Pagos</span>
+        </div>
+        
+        {/* Línea cyan decorativa */}
+        <div className="h-1 w-22 bg-[#00A4E4] mt-4"></div>
       </div>
 
       <div className="flex flex-col gap-6 flex-1">
