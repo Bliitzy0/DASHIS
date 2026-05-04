@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { obtenerTextoEstatus } from '../utils/diccionarios';
+import { obtenerTextoEstatus, formatoDineroMoneda } from '../utils/diccionarios';
 
 export function TablaPagos({ datos, cargando, alHacerClicFila }) {
   const [paginaActual, setPaginaActual] = useState(1);
@@ -14,7 +14,12 @@ export function TablaPagos({ datos, cargando, alHacerClicFila }) {
   const indicePrimeraFila = indiceUltimaFila - filasPorPagina;
   const filasActuales = datos.slice(indicePrimeraFila, indiceUltimaFila);
 
-  const formatoDinero = (monto) => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(monto || 0);
+  // 🚀 NUEVA FUNCIÓN: Corta el texto para quedarse solo con YYYY-MM-DD
+  const soloFecha = (fechaCompleta) => {
+    if (!fechaCompleta) return '-';
+    // Corta por la "T" (si es formato ISO) o por el espacio (si es formato SQL)
+    return fechaCompleta.split('T')[0].split(' ')[0]; 
+  };
 
   return (
     <div className="flex flex-col h-full bg-white border border-gray-200">
@@ -24,9 +29,11 @@ export function TablaPagos({ datos, cargando, alHacerClicFila }) {
             <tr>
               <th className="px-6 py-4 font-bold">Folio RQ</th>
               <th className="px-6 py-4 font-bold">Fecha</th>
-              <th className="px-6 py-4 font-bold">Cliente</th>
+              {/* 🚀 Aumentamos el espacio mínimo de la cabecera */}
+              <th className="px-6 py-4 font-bold min-w-[250px]">Cliente</th>
               <th className="px-6 py-4 font-bold text-right">Total</th>
-              <th className="px-6 py-4 font-bold">Justificación</th>
+              {/* 🚀 Le damos mucho más espacio a la justificación */}
+              <th className="px-6 py-4 font-bold min-w-[350px]">Justificación</th>
               <th className="px-6 py-4 font-bold">Estatus</th>
             </tr>
           </thead>
@@ -34,12 +41,23 @@ export function TablaPagos({ datos, cargando, alHacerClicFila }) {
             {filasActuales.map((fila, index) => (
               <tr key={index} onClick={() => alHacerClicFila(fila)} className="bg-white hover:bg-gray-50 cursor-pointer transition-colors">
                 <td className="px-6 py-3 font-bold text-[#000638]">{fila.IDFOLIORQ}</td>
-                <td className="px-6 py-3 text-gray-500">{fila.FECHARQ}</td>
-                <td className="px-6 py-3 truncate max-w-[150px]" title={fila.NOMCLIENT}>{fila.NOMCLIENT}</td>
-                <td className="px-6 py-3 text-right font-bold text-[#00A4E4]">{formatoDinero(fila.TOTAL)}</td>
-                {/* 🚀 NUEVA COLUMNA: Justificación */}
-                <td className="px-6 py-3 truncate max-w-[200px] text-gray-500" title={fila.JUSTIFICOMP}>{fila.JUSTIFICOMP || '-'}</td>
-                {/* 🚀 NUEVO ESTATUS: Transformado a texto */}
+                
+                {/* 🚀 Aplicamos la función para ocultar la hora */}
+                <td className="px-6 py-3 text-gray-500">{soloFecha(fila.FECHARQ)}</td>
+                
+                {/* 🚀 Subimos el límite a 250px para ver más del nombre */}
+                <td className="px-6 py-3 truncate max-w-[250px]" title={fila.NOMCLIENT}>{fila.NOMCLIENT}</td>
+                
+                <td className="px-6 py-3 text-right font-bold text-[#00A4E4]">
+                  {formatoDineroMoneda(fila.TOTAL, fila.MONERA)} 
+                  <span className="text-[9px] text-gray-400 ml-1">{fila.MONERA}</span>
+                </td>
+                
+                {/* 🚀 Quitamos el "truncate", aplicamos "whitespace-normal" para que permita saltos de línea y aumentamos el ancho a 450px */}
+                <td className="px-6 py-3 min-w-[350px] max-w-[450px] whitespace-normal text-gray-500 text-xs leading-relaxed" title={fila.JUSTIFICOMP}>
+                  {fila.JUSTIFICOMP || '-'}
+                </td>
+                
                 <td className="px-6 py-3">
                   <span className="bg-gray-200 text-[#000638] text-[10px] font-bold px-2 py-1 uppercase tracking-wider">
                     {obtenerTextoEstatus(fila.ESTATUS)}

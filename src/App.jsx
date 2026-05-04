@@ -1,10 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { TablaPagos } from './components/TablaPagos';
 import { GraficaPagos } from './components/GraficaPagos';
-import { obtenerTextoEstatus } from './utils/diccionarios';
+import { obtenerTextoEstatus, convertirAMXN } from './utils/diccionarios';
 
 function App() {
+  // 🚀 ESTADO PARA GUARDAR LOS TIPOS DE CAMBIO (Con valores de rescate por si el internet falla)
+  const [tasasCambio, setTasasCambio] = useState({ USD: 17.50, EUR: 19.00 });
+
+  // 🚀 DESCARGAR EL PRECIO REAL AL ABRIR LA PÁGINA
+  useEffect(() => {
+    const obtenerDivisas = async () => {
+      try {
+        // Consultamos la API pública y gratuita
+        const respuesta = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+        const datos = await respuesta.json();
+        
+        // datos.rates.MXN nos da cuántos pesos es un dólar hoy
+        const valorDolar = datos.rates.MXN;
+        const valorEuro = datos.rates.MXN / datos.rates.EUR; 
+
+        setTasasCambio({ USD: valorDolar, EUR: valorEuro });
+        console.log(`Tipos de cambio actualizados: 1 USD = $${valorDolar} MXN`);
+      } catch (error) {
+        console.warn("No se pudo obtener el tipo de cambio de internet. Usando valores de rescate.");
+      }
+    };
+
+    obtenerDivisas();
+  }, []); // Los corchetes vacíos indican que solo se ejecuta 1 vez al iniciar
+  
   const [datosReporte, setDatosReporte] = useState([]);
   const [cargando, setCargando] = useState(false);
   const [rqSeleccionado, setRqSeleccionado] = useState(null); 
@@ -32,7 +57,10 @@ function App() {
   };
 
   const formatoDinero = (monto) => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(monto || 0);
-  const costoTotal = datosReporte.reduce((suma, fila) => suma + (fila.TOTAL || 0), 0);
+  // 🚀 AHORA LA TARJETA SUMA TODO CONVERTIDO A MXN
+  const costoTotal = datosReporte.reduce((acc, fila) => {
+    return acc + convertirAMXN(fila.TOTAL, fila.MONERA, tasasCambio);
+  }, 0);
 
   return (
     // 🏢 Fondo gris corporativo (muy usado en intranet)
@@ -59,7 +87,8 @@ function App() {
 
         {datosReporte.length > 0 && (
           <div className="bg-white p-8 border border-gray-200 shadow-sm mb-8">
-            <GraficaPagos datos={datosReporte} />
+            
+            <GraficaPagos datos={datosReporte} tasas={tasasCambio} />
           </div>
         )}
         

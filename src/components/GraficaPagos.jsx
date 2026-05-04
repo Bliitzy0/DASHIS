@@ -1,13 +1,16 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { obtenerTextoEstatus } from '../utils/diccionarios';
+import { obtenerTextoEstatus, convertirAMXN } from '../utils/diccionarios';
 
-export function GraficaPagos({ datos }) {
+export function GraficaPagos({ datos, tasas }) {
   if (!datos || datos.length === 0) return null;
 
   const agrupados = datos.reduce((acc, fila) => {
     const estatus = fila.ESTATUS !== null ? fila.ESTATUS : 'N/A';
     if (!acc[estatus]) acc[estatus] = { nombre: estatus, total: 0 };
-    acc[estatus].total += (fila.TOTAL || 0);
+    
+    // 🚀 LE PASAMOS LAS TASAS REALES DE INTERNET A LA CALCULADORA
+    acc[estatus].total += convertirAMXN(fila.TOTAL, fila.MONERA, tasas); 
+    
     return acc;
   }, {});
 
@@ -46,20 +49,6 @@ export function GraficaPagos({ datos }) {
             <Bar dataKey="total" fill="#000638" radius={[0, 0, 0, 0]} barSize={50} />
           </BarChart>
         </ResponsiveContainer>
-      </div>
-
-      {/* 🚀 NUEVA LEYENDA DINÁMICA */}
-      <div className="flex flex-wrap justify-center gap-6 mt-6 pt-4 border-t border-gray-100">
-        {dataGrafica.map((item, idx) => (
-          <div key={idx} className="flex items-center gap-2">
-            <span className="w-5 h-5 bg-[#00A4E4] text-white text-[10px] font-bold flex justify-center items-center rounded-sm shadow-sm">
-              {item.nombre}
-            </span>
-            <span className="text-[10px] text-gray-600 font-bold uppercase tracking-widest">
-              {obtenerTextoEstatus(item.nombre)}
-            </span>
-          </div>
-        ))}
       </div>
     </div>
   );

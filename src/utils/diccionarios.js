@@ -34,3 +34,22 @@ export const DICCIONARIO_ESTATUS = {
 export const obtenerTextoEstatus = (numero) => {
   return DICCIONARIO_ESTATUS[String(numero)] || "Desconocido";
 };
+// 🚀 1. Función para convertir a MXN (con su seguro de vida)
+export const convertirAMXN = (monto, moneda, tasasDinamicas) => {
+  if (!monto) return 0;
+  if (moneda === 'MXN') return monto;
+  
+  const tasasSeguras = tasasDinamicas || {}; 
+  const tasa = tasasSeguras[moneda] || 1; 
+  
+  return monto * tasa;
+};
+
+// 🚀 2. Función para darle formato visual a la tabla (¡Esta es la que faltaba!)
+export const formatoDineroMoneda = (monto, moneda) => {
+  const codigoMoneda = moneda && moneda.trim() !== '' ? moneda : 'MXN';
+  return new Intl.NumberFormat('es-MX', { 
+    style: 'currency', 
+    currency: codigoMoneda 
+  }).format(monto || 0);
+};
