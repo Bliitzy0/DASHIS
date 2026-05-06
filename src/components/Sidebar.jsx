@@ -20,7 +20,7 @@ export function Sidebar({ onGenerarReporte }) {
   useEffect(() => {
     const cargarCatalogos = async () => {
       try {
-        const respuesta = await fetch("http://10.52.9.44:8000/api/catalogos");
+        const respuesta = await fetch("http://10.52.18.191:8000/api/catalogos");
         const data = await respuesta.json();
         const formatear = (arr) => arr.map(item => ({ value: item, label: item }));
 
@@ -61,9 +61,9 @@ export function Sidebar({ onGenerarReporte }) {
 
   // 🏢 ESTILO CLARO CORPORATIVO: Cajas blancas, bordes grises definidos
   const estilosSelect = useMemo(() => ({
-    control: (base, state) => ({ 
-      ...base, 
-      borderRadius: '2px', 
+    control: (base, state) => ({
+      ...base,
+      borderRadius: '2px',
       borderColor: state.isFocused ? '#00A4E4' : '#d1d5db', // border-gray-300
       boxShadow: state.isFocused ? '0 0 0 1px #00A4E4' : 'none',
       backgroundColor: '#ffffff',
@@ -86,15 +86,15 @@ export function Sidebar({ onGenerarReporte }) {
   return (
     // 🎨 CAMBIO PRINCIPAL: Fondo blanco puro con línea separadora gris a la derecha
     <div className={`h-screen bg-white border-r border-gray-200 flex flex-col z-20 overflow-y-auto custom-scrollbar shrink-0 transition-all duration-300 ${isOpen ? 'w-[340px] p-8' : 'w-[80px] p-4 items-center'}`}>
-      
+
       <div className={`flex ${isOpen ? 'justify-between items-start' : 'flex-col items-center gap-6'} mb-6 w-full`}>
         {isOpen ? (
           <div>
             <div className="flex items-center gap-3">
-              <img 
-                src="/ISSL.png" 
-                alt="Logo ISS" 
-                className="h-14 w-auto object-contain" 
+              <img
+                src="/ISSL.png"
+                alt="Logo ISS"
+                className="h-14 w-auto object-contain"
               />
               <span className="text-[#000638] text-3xl font-light tracking-tight">Pagos</span>
             </div>
@@ -102,14 +102,14 @@ export function Sidebar({ onGenerarReporte }) {
             <div className="h-1 w-22 bg-[#00A4E4] mt-4"></div>
           </div>
         ) : (
-          <img 
-            src="/ISSL.png" 
-            alt="Logo ISS" 
-            className="h-10 w-auto object-contain" 
+          <img
+            src="/ISSL.png"
+            alt="Logo ISS"
+            className="h-10 w-auto object-contain"
           />
         )}
-        
-        <button 
+
+        <button
           onClick={() => setIsOpen(!isOpen)}
           className={`text-gray-400 hover:text-[#00A4E4] transition-colors ${isOpen ? 'mt-2' : ''}`}
           title={isOpen ? "Contraer" : "Expandir"}
@@ -125,8 +125,8 @@ export function Sidebar({ onGenerarReporte }) {
       <div className={`flex flex-col gap-6 flex-1 mt-4 ${isOpen ? 'opacity-100' : 'hidden'}`}>
         <div>
           <label className="block text-[10px] font-bold mb-2 text-gray-500 uppercase tracking-widest">Año de Consulta</label>
-          <select 
-            value={selAnio} 
+          <select
+            value={selAnio}
             onChange={(e) => setSelAnio(e.target.value)}
             className="w-full p-2 rounded-sm border border-gray-300 bg-white text-[#000638] font-medium focus:outline-none focus:border-[#00A4E4] focus:ring-1 focus:ring-[#00A4E4] transition-all">
             <option value="2024">2024</option>
@@ -158,13 +158,13 @@ export function Sidebar({ onGenerarReporte }) {
 
       {/* 🏢 BOTÓN: Inicia Azul Oscuro, cambia a Cyan en Hover */}
       {isOpen ? (
-        <button 
+        <button
           onClick={() => onGenerarReporte({ anio: selAnio, meses: selMeses, clientes: selClientes, compradores: selCompradores, estatus: selEstatus })}
           className="mt-8 w-full py-4 bg-[#000638] hover:bg-[#00A4E4] transition-colors duration-300 text-white font-bold text-sm uppercase tracking-widest rounded-sm">
           Aplicar Filtros
         </button>
       ) : (
-        <button 
+        <button
           onClick={() => onGenerarReporte({ anio: selAnio, meses: selMeses, clientes: selClientes, compradores: selCompradores, estatus: selEstatus })}
           className="mt-auto w-full py-4 bg-[#000638] hover:bg-[#00A4E4] transition-colors duration-300 text-white flex justify-center rounded-sm"
           title="Aplicar Filtros"
