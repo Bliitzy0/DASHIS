@@ -29,7 +29,6 @@ export function TablaPagos({ datos, cargando, alHacerClicFila }) {
             <tr>
               <th className="w-24 px-6 py-4 font-bold max-w-15">Folio RQ</th>
               <th className="w-28 px-6 py-4 font-bold max-w-20">Fecha</th>
-              {/* 🚀 Aumentamos el espacio mínimo de la cabecera */}
               <th className="w-64 px-6 py-4 font-bold max-w-60 ">Cliente</th>
               <th className="w-32 px-6 py-4 font-bold text-right max-w-25">Total</th>
               <th className="w-64 px-6 py-4 font-bold max-w-40">Justificación</th>
@@ -41,10 +40,10 @@ export function TablaPagos({ datos, cargando, alHacerClicFila }) {
               <tr key={index} onClick={() => alHacerClicFila(fila)} className="bg-white hover:bg-[#f0f9ff] cursor-pointer transition-all duration-300 group">
                 <td className="px-6 py-3 font-bold text-[#000638] group-hover:text-[#00A4E4] transition-colors">{fila.IDFOLIORQ}</td>
 
-                {/* 🚀 Aplicamos la función para ocultar la hora */}
+                {/* Aplicamos la función para ocultar la hora */}
                 <td className="px-6 py-3 text-gray-500">{soloFecha(fila.FECHARQ)}</td>
 
-                {/* 🚀 Subimos el límite a 250px para ver más del nombre */}
+                {/* Subimos el límite a 250px para ver más del nombre */}
                 <td className="px-6 py-3 truncate max-w-[250px]" title={fila.NOMCLIENT}>{fila.NOMCLIENT}</td>
 
                 <td className="px-6 py-3 text-right font-bold text-[#00A4E4]">
@@ -52,7 +51,7 @@ export function TablaPagos({ datos, cargando, alHacerClicFila }) {
                   <span className="text-[9px] text-gray-400 ml-1">{fila.MONERA}</span>
                 </td>
 
-                {/* 🚀 Dejamos que table-fixed controle el ancho, pero permitimos saltos de línea con line-clamp para no hacer la fila gigante */}
+                {/* Dejamos que table-fixed controle el ancho, pero permitimos saltos de línea con line-clamp para no hacer la fila gigante */}
                 <td className="px-6 py-3 whitespace-normal text-gray-500 text-xs leading-relaxed" title={fila.JUSTIFICOMP}>
                   <div className="line-clamp-2">{fila.JUSTIFICOMP || '-'}</div>
                 </td>

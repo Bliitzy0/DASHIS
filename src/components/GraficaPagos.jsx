@@ -9,10 +9,10 @@ export function GraficaPagos({ datos, tasas }) {
     const agrupados = datos.reduce((acc, fila) => {
       const estatus = fila.ESTATUS !== null ? fila.ESTATUS : 'N/A';
       if (!acc[estatus]) acc[estatus] = { nombre: estatus, total: 0 };
-      
-      // 🚀 LE PASAMOS LAS TASAS REALES DE INTERNET A LA CALCULADORA
-      acc[estatus].total += convertirAMXN(fila.TOTAL, fila.MONERA, tasas); 
-      
+
+      // LE PASAMOS LAS TASAS REALES DE INTERNET A LA CALCULADORA
+      acc[estatus].total += convertirAMXN(fila.TOTAL, fila.MONERA, tasas);
+
       return acc;
     }, {});
 
@@ -26,7 +26,7 @@ export function GraficaPagos({ datos, tasas }) {
     if (active && payload && payload.length) {
       return (
         <div className="bg-white p-4 border border-gray-200 shadow-sm rounded-sm">
-          {/* 🚀 Muestra Número - Texto en el flotante */}
+          {/* Muestra Número - Texto en el flotante */}
           <p className="font-bold text-[10px] text-gray-500 uppercase tracking-widest mb-1">
             ESTATUS {label} - {obtenerTextoEstatus(label)}
           </p>
@@ -42,14 +42,14 @@ export function GraficaPagos({ datos, tasas }) {
       <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-6 text-center">
         Distribución de Inversión por Estado Operativo
       </h3>
-      
+
       <div className="h-80 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={dataGrafica} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-            <XAxis dataKey="nombre" tick={{fontSize: 10, fill: '#6b7280', fontWeight: 'bold'}} tickMargin={10}/>
-            <YAxis tickFormatter={formatoEjeY} tick={{fontSize: 10, fill: '#6b7280'}} width={80}/>
-            <Tooltip content={<CustomTooltip />} cursor={{fill: '#f9fafb'}} />
+            <XAxis dataKey="nombre" tick={{ fontSize: 10, fill: '#6b7280', fontWeight: 'bold' }} tickMargin={10} />
+            <YAxis tickFormatter={formatoEjeY} tick={{ fontSize: 10, fill: '#6b7280' }} width={80} />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: '#f9fafb' }} />
             <Bar dataKey="total" fill="#000638" radius={[0, 0, 0, 0]} barSize={50} activeBar={{ fill: '#00A4E4' }} animationDuration={1000} />
           </BarChart>
         </ResponsiveContainer>

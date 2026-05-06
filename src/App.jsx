@@ -5,14 +5,14 @@ import { GraficaPagos } from './components/GraficaPagos';
 import { obtenerTextoEstatus, convertirAMXN } from './utils/diccionarios';
 
 function App() {
-  // 🚀 ESTADO PARA GUARDAR LOS TIPOS DE CAMBIO (Con valores de rescate por si el internet falla)
+  // ESTADO PARA GUARDAR LOS TIPOS DE CAMBIO (Con valores estaticos por si la conexion falla)
   const [tasasCambio, setTasasCambio] = useState({ USD: 17.50, EUR: 19.00 });
 
-  // 🚀 DESCARGAR EL PRECIO REAL AL ABRIR LA PÁGINA
+  // DESCARGAR EL PRECIO REAL AL ABRIR LA PÁGINA
   useEffect(() => {
     const obtenerDivisas = async () => {
       try {
-        // Consultamos la API pública y gratuita
+        // Consultamos la API pública
         const respuesta = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
         const datos = await respuesta.json();
 
@@ -57,7 +57,7 @@ function App() {
   };
 
   const formatoDinero = (monto) => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(monto || 0);
-  // 🚀 AHORA LA TARJETA SUMA TODO CONVERTIDO A MXN
+  // AHORA LA TARJETA SUMA TODO CONVERTIDO A MXN
   const costoTotal = useMemo(() => {
     return datosReporte.reduce((acc, fila) => {
       return acc + convertirAMXN(fila.TOTAL, fila.MONERA, tasasCambio);
@@ -65,7 +65,7 @@ function App() {
   }, [datosReporte, tasasCambio]);
 
   return (
-    // 🏢 Fondo gris corporativo 
+    //  Fondo gris corporativo 
     <div className="flex h-screen bg-[#f4f4f4] overflow-hidden font-sans">
       <Sidebar onGenerarReporte={generarReporte} />
 
@@ -74,7 +74,7 @@ function App() {
 
         {datosReporte.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            {/* 🏢 Tarjetas Flat: Borde superior grueso, sombra casi invisible, fondo blanco puro */}
+            {/*  Tarjetas Flat: Borde superior grueso, sombra casi invisible, fondo blanco puro */}
             <div className="bg-white p-8 border-t-4 border-[#00A4E4] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
               <h3 className="text-gray-400 font-bold text-[10px] uppercase tracking-widest mb-2">Costo Total</h3>
               <p className="text-5xl font-light text-[#000638] tracking-tight">{formatoDinero(costoTotal)}</p>
@@ -99,7 +99,7 @@ function App() {
         </div>
       </div>
 
-      {/* 🏢 MODAL TIPO DOCUMENTO OFICIAL */}
+      {/* MODAL TIPO DOCUMENTO OFICIAL */}
       {rqSeleccionado && (
         <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 p-4 transition-all">
           <div className="bg-white w-full max-w-3xl rounded-sm shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
