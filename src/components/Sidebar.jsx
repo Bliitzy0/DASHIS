@@ -15,6 +15,8 @@ export function Sidebar({ onGenerarReporte }) {
   const [selCompradores, setSelCompradores] = useState([]);
   const [selEstatus, setSelEstatus] = useState([]);
 
+  const [isOpen, setIsOpen] = useState(true);
+
   useEffect(() => {
     const cargarCatalogos = async () => {
       try {
@@ -83,24 +85,44 @@ export function Sidebar({ onGenerarReporte }) {
 
   return (
     // 🎨 CAMBIO PRINCIPAL: Fondo blanco puro con línea separadora gris a la derecha
-    <div className="w-[340px] h-screen bg-white border-r border-gray-200 p-8 flex flex-col z-20 overflow-y-auto custom-scrollbar shrink-0">
+    <div className={`h-screen bg-white border-r border-gray-200 flex flex-col z-20 overflow-y-auto custom-scrollbar shrink-0 transition-all duration-300 ${isOpen ? 'w-[340px] p-8' : 'w-[80px] p-4 items-center'}`}>
       
-     {/* 🏢 LOGO TIPO ISS - Imagen y Texto */}
-      <div className="mb-10">
-        <div className="flex items-center gap-3">
+      <div className={`flex ${isOpen ? 'justify-between items-start' : 'flex-col items-center gap-6'} mb-6 w-full`}>
+        {isOpen ? (
+          <div>
+            <div className="flex items-center gap-3">
+              <img 
+                src="/ISSL.png" 
+                alt="Logo ISS" 
+                className="h-14 w-auto object-contain" 
+              />
+              <span className="text-[#000638] text-3xl font-light tracking-tight">Pagos</span>
+            </div>
+            {/* Línea cyan decorativa */}
+            <div className="h-1 w-22 bg-[#00A4E4] mt-4"></div>
+          </div>
+        ) : (
           <img 
             src="/ISSL.png" 
             alt="Logo ISS" 
-            className="h-14 w-auto object-contain" 
+            className="h-10 w-auto object-contain" 
           />
-          <span className="text-[#000638] text-3xl font-light tracking-tight">Pagos</span>
-        </div>
+        )}
         
-        {/* Línea cyan decorativa */}
-        <div className="h-1 w-22 bg-[#00A4E4] mt-4"></div>
+        <button 
+          onClick={() => setIsOpen(!isOpen)}
+          className={`text-gray-400 hover:text-[#00A4E4] transition-colors ${isOpen ? 'mt-2' : ''}`}
+          title={isOpen ? "Contraer" : "Expandir"}
+        >
+          {isOpen ? (
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" /></svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
+          )}
+        </button>
       </div>
 
-      <div className="flex flex-col gap-6 flex-1">
+      <div className={`flex flex-col gap-6 flex-1 mt-4 ${isOpen ? 'opacity-100' : 'hidden'}`}>
         <div>
           <label className="block text-[10px] font-bold mb-2 text-gray-500 uppercase tracking-widest">Año de Consulta</label>
           <select 
@@ -135,11 +157,21 @@ export function Sidebar({ onGenerarReporte }) {
       </div>
 
       {/* 🏢 BOTÓN: Inicia Azul Oscuro, cambia a Cyan en Hover */}
-      <button 
-        onClick={() => onGenerarReporte({ anio: selAnio, meses: selMeses, clientes: selClientes, compradores: selCompradores, estatus: selEstatus })}
-        className="mt-8 w-full py-4 bg-[#000638] hover:bg-[#00A4E4] transition-colors duration-300 text-white font-bold text-sm uppercase tracking-widest rounded-sm">
-        Aplicar Filtros
-      </button>
+      {isOpen ? (
+        <button 
+          onClick={() => onGenerarReporte({ anio: selAnio, meses: selMeses, clientes: selClientes, compradores: selCompradores, estatus: selEstatus })}
+          className="mt-8 w-full py-4 bg-[#000638] hover:bg-[#00A4E4] transition-colors duration-300 text-white font-bold text-sm uppercase tracking-widest rounded-sm">
+          Aplicar Filtros
+        </button>
+      ) : (
+        <button 
+          onClick={() => onGenerarReporte({ anio: selAnio, meses: selMeses, clientes: selClientes, compradores: selCompradores, estatus: selEstatus })}
+          className="mt-auto w-full py-4 bg-[#000638] hover:bg-[#00A4E4] transition-colors duration-300 text-white flex justify-center rounded-sm"
+          title="Aplicar Filtros"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+        </button>
+      )}
     </div>
   );
 }

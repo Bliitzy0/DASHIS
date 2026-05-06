@@ -14,50 +14,49 @@ export function TablaPagos({ datos, cargando, alHacerClicFila }) {
   const indicePrimeraFila = indiceUltimaFila - filasPorPagina;
   const filasActuales = datos.slice(indicePrimeraFila, indiceUltimaFila);
 
-  // 🚀 NUEVA FUNCIÓN: Corta el texto para quedarse solo con YYYY-MM-DD
+  // Corta el texto para quedarse solo con YYYY-MM-DD
   const soloFecha = (fechaCompleta) => {
     if (!fechaCompleta) return '-';
     // Corta por la "T" (si es formato ISO) o por el espacio (si es formato SQL)
-    return fechaCompleta.split('T')[0].split(' ')[0]; 
+    return fechaCompleta.split('T')[0].split(' ')[0];
   };
 
   return (
     <div className="flex flex-col h-full bg-white border border-gray-200">
       <div className="overflow-x-auto overflow-y-auto custom-scrollbar">
-        <table className="w-full text-left text-sm text-gray-700 whitespace-nowrap">
+        <table className="w-full table-fixed text-left text-sm text-gray-700 whitespace-nowrap">
           <thead className="text-[11px] text-gray-500 uppercase tracking-widest bg-gray-50 sticky top-0 z-10 border-b border-gray-200">
             <tr>
-              <th className="px-6 py-4 font-bold">Folio RQ</th>
-              <th className="px-6 py-4 font-bold">Fecha</th>
+              <th className="w-24 px-6 py-4 font-bold max-w-15">Folio RQ</th>
+              <th className="w-28 px-6 py-4 font-bold max-w-20">Fecha</th>
               {/* 🚀 Aumentamos el espacio mínimo de la cabecera */}
-              <th className="px-6 py-4 font-bold min-w-[250px]">Cliente</th>
-              <th className="px-6 py-4 font-bold text-right">Total</th>
-              {/* 🚀 Le damos mucho más espacio a la justificación */}
-              <th className="px-6 py-4 font-bold min-w-[350px]">Justificación</th>
-              <th className="px-6 py-4 font-bold">Estatus</th>
+              <th className="w-64 px-6 py-4 font-bold max-w-60 ">Cliente</th>
+              <th className="w-32 px-6 py-4 font-bold text-right max-w-25">Total</th>
+              <th className="w-64 px-6 py-4 font-bold max-w-40">Justificación</th>
+              <th className="w-64 px-6 py-4 font-bold">Estatus</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
             {filasActuales.map((fila, index) => (
-              <tr key={index} onClick={() => alHacerClicFila(fila)} className="bg-white hover:bg-gray-50 cursor-pointer transition-colors">
-                <td className="px-6 py-3 font-bold text-[#000638]">{fila.IDFOLIORQ}</td>
-                
+              <tr key={index} onClick={() => alHacerClicFila(fila)} className="bg-white hover:bg-[#f0f9ff] cursor-pointer transition-all duration-300 group">
+                <td className="px-6 py-3 font-bold text-[#000638] group-hover:text-[#00A4E4] transition-colors">{fila.IDFOLIORQ}</td>
+
                 {/* 🚀 Aplicamos la función para ocultar la hora */}
                 <td className="px-6 py-3 text-gray-500">{soloFecha(fila.FECHARQ)}</td>
-                
+
                 {/* 🚀 Subimos el límite a 250px para ver más del nombre */}
                 <td className="px-6 py-3 truncate max-w-[250px]" title={fila.NOMCLIENT}>{fila.NOMCLIENT}</td>
-                
+
                 <td className="px-6 py-3 text-right font-bold text-[#00A4E4]">
-                  {formatoDineroMoneda(fila.TOTAL, fila.MONERA)} 
+                  {formatoDineroMoneda(fila.TOTAL, fila.MONERA)}
                   <span className="text-[9px] text-gray-400 ml-1">{fila.MONERA}</span>
                 </td>
-                
-                {/* 🚀 Quitamos el "truncate", aplicamos "whitespace-normal" para que permita saltos de línea y aumentamos el ancho a 450px */}
-                <td className="px-6 py-3 min-w-[350px] max-w-[450px] whitespace-normal text-gray-500 text-xs leading-relaxed" title={fila.JUSTIFICOMP}>
-                  {fila.JUSTIFICOMP || '-'}
+
+                {/* 🚀 Dejamos que table-fixed controle el ancho, pero permitimos saltos de línea con line-clamp para no hacer la fila gigante */}
+                <td className="px-6 py-3 whitespace-normal text-gray-500 text-xs leading-relaxed" title={fila.JUSTIFICOMP}>
+                  <div className="line-clamp-2">{fila.JUSTIFICOMP || '-'}</div>
                 </td>
-                
+
                 <td className="px-6 py-3">
                   <span className="bg-gray-200 text-[#000638] text-[10px] font-bold px-2 py-1 uppercase tracking-wider">
                     {obtenerTextoEstatus(fila.ESTATUS)}
