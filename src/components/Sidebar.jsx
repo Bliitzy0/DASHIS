@@ -20,7 +20,7 @@ export function Sidebar({ onGenerarReporte }) {
   useEffect(() => {
     const cargarCatalogos = async () => {
       try {
-        const respuesta = await fetch("http://10.52.18.191:8000/api/catalogos");
+        const respuesta = await fetch("http://10.52.9.44:8000/api/catalogos");
         const data = await respuesta.json();
         const formatear = (arr) => arr.map(item => ({ value: item, label: item }));
 
@@ -59,7 +59,7 @@ export function Sidebar({ onGenerarReporte }) {
     }
   };
 
-  // 🏢 ESTILO CLARO CORPORATIVO: Cajas blancas, bordes grises definidos
+  // ESTILO CLARO CORPORATIVO: Cajas blancas, bordes grises definidos
   const estilosSelect = useMemo(() => ({
     control: (base, state) => ({
       ...base,
@@ -84,7 +84,7 @@ export function Sidebar({ onGenerarReporte }) {
   }), []);
 
   return (
-    // 🎨 CAMBIO PRINCIPAL: Fondo blanco puro con línea separadora gris a la derecha
+    //  CAMBIO PRINCIPAL: Fondo blanco puro con línea separadora gris a la derecha
     <div className={`h-screen bg-white border-r border-gray-200 flex flex-col z-20 overflow-y-auto custom-scrollbar shrink-0 transition-all duration-300 ${isOpen ? 'w-[340px] p-8' : 'w-[80px] p-4 items-center'}`}>
 
       <div className={`flex ${isOpen ? 'justify-between items-start' : 'flex-col items-center gap-6'} mb-6 w-full`}>
@@ -156,7 +156,7 @@ export function Sidebar({ onGenerarReporte }) {
         </div>
       </div>
 
-      {/* 🏢 BOTÓN: Inicia Azul Oscuro, cambia a Cyan en Hover */}
+      {/* BOTÓN: Inicia Azul Oscuro, cambia a Cyan en Hover */}
       {isOpen ? (
         <button
           onClick={() => onGenerarReporte({ anio: selAnio, meses: selMeses, clientes: selClientes, compradores: selCompradores, estatus: selEstatus })}

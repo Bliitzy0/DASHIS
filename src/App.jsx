@@ -46,7 +46,7 @@ function App() {
 
 
 
-      const res = await fetch(`http://10.52.18.191:8000/api/reporte?${params.toString()}`);
+      const res = await fetch(`http://10.52.9.44:8000/api/reporte?${params.toString()}`);
       const data = await res.json();
       setDatosReporte(data.registros);
     } catch (error) {
