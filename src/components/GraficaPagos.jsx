@@ -44,7 +44,7 @@ export function GraficaPagos({ datos, tasas }) {
       </h3>
 
       <div className="h-80 w-full">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height="100%" debounce={300}>
           <BarChart data={dataGrafica} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
             <XAxis dataKey="nombre" tick={{ fontSize: 10, fill: '#6b7280', fontWeight: 'bold' }} tickMargin={10} />

@@ -85,9 +85,9 @@ export function Sidebar({ onGenerarReporte }) {
 
   return (
     //  CAMBIO PRINCIPAL: Fondo blanco puro con línea separadora gris a la derecha
-    <div className={`h-screen bg-white border-r border-gray-200 flex flex-col z-20 overflow-y-auto custom-scrollbar shrink-0 transition-all duration-300 ${isOpen ? 'w-[340px] p-8' : 'w-[80px] p-4 items-center'}`}>
+    <div className={`h-screen bg-white border-r border-gray-200 flex flex-col z-20 overflow-y-auto overflow-x-hidden custom-scrollbar shrink-0 transition-all duration-300 ${isOpen ? 'w-[340px] p-8' : 'w-[80px] p-4 items-center'}`}>
 
-      <div className={`flex ${isOpen ? 'justify-between items-start' : 'flex-col items-center gap-6'} mb-6 w-full`}>
+      <div className={`flex ${isOpen ? 'justify-between items-start w-[276px]' : 'flex-col items-center gap-6'} mb-6`}>
         {isOpen ? (
           <div>
             <div className="flex items-center gap-3">
@@ -111,7 +111,7 @@ export function Sidebar({ onGenerarReporte }) {
 
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`text-gray-400 hover:text-[#00A4E4] transition-colors ${isOpen ? 'mt-2' : ''}`}
+          className={`text-gray-400 hover:text-[#00A4E4] transition-colors ${isOpen ? 'mt-2 shrink-0' : ''}`}
           title={isOpen ? "Contraer" : "Expandir"}
         >
           {isOpen ? (
@@ -122,7 +122,7 @@ export function Sidebar({ onGenerarReporte }) {
         </button>
       </div>
 
-      <div className={`flex flex-col gap-6 flex-1 mt-4 ${isOpen ? 'opacity-100' : 'hidden'}`}>
+      <div className={`flex flex-col gap-6 flex-1 mt-4 ${isOpen ? 'opacity-100 w-[276px]' : 'hidden'}`}>
         <div>
           <label className="block text-[10px] font-bold mb-2 text-gray-500 uppercase tracking-widest">Año de Consulta</label>
           <select
