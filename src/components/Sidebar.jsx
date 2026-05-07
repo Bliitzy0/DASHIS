@@ -129,6 +129,7 @@ export function Sidebar({ onGenerarReporte }) {
             value={selAnio}
             onChange={(e) => setSelAnio(e.target.value)}
             className="w-full p-2 rounded-sm border border-gray-300 bg-white text-[#000638] font-medium focus:outline-none focus:border-[#00A4E4] focus:ring-1 focus:ring-[#00A4E4] transition-all">
+            <option value="2023">2023</option>
             <option value="2024">2024</option>
             <option value="2025">2025</option>
             <option value="2026">2026</option>
@@ -146,7 +147,7 @@ export function Sidebar({ onGenerarReporte }) {
         </div>
 
         <div>
-          <label className="block text-[10px] font-bold mb-2 text-gray-500 uppercase tracking-widest">Compradores</label>
+          <label className="block text-[10px] font-bold mb-2 text-gray-500 uppercase tracking-widest">Compradores</label>{/*Antes "CORREOSOLIC"*/}
           <Select isMulti options={compradoresVisibles} value={selCompradores} onChange={setSelCompradores} onInputChange={buscarComprador} filterOption={null} placeholder="Buscar..." styles={estilosSelect} className="text-sm" />
         </div>
 

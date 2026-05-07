@@ -125,7 +125,7 @@ function App() {
               <div><span className="font-bold block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Tipo de Compra</span> {rqSeleccionado.TIPOCOMPRA || '-'}</div>
 
               <div className="col-span-2"><span className="font-bold block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Entidad Cliente</span> {rqSeleccionado.NOMCLIENT}</div>
-              <div className="col-span-2"><span className="font-bold block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Solicitante Autorizado</span> {rqSeleccionado.SOLICITANTE || '-'} <span className="text-gray-500">({rqSeleccionado.CORREOSOLIC || '-'})</span></div>
+              <div className="col-span-2"><span className="font-bold block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Comprador</span> {rqSeleccionado.CTACORREO || '-'} <span className="text-gray-500">({rqSeleccionado.CORREOSOLIC || '-'})</span></div>
 
 
 
