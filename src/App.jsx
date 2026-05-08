@@ -68,8 +68,8 @@ function App() {
   }, [datosReporte, tasasCambio]);
 
   return (
-    //  Fondo gris corporativo 
-    <div className="flex h-screen bg-[#f4f4f4] overflow-hidden font-sans">
+    //  Fondo azul pastel muy tenue (basado en la referencia)
+    <div className="flex h-screen bg-[#ebf3fa] overflow-hidden font-sans">
       <Sidebar onGenerarReporte={generarReporte} />
 
       <div className="flex-1 p-10 overflow-y-auto custom-scrollbar">
