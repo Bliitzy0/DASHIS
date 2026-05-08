@@ -5,9 +5,22 @@ export function TablaPagos({ datos, cargando, alHacerClicFila }) {
   const [paginaActual, setPaginaActual] = useState(1);
   const filasPorPagina = 100;
 
-  if (cargando) return <div className="flex justify-center items-center h-64 font-bold text-[#00A4E4]">Cargando información...</div>;
+  if (cargando) return (
+    <div className="flex flex-col justify-center items-center h-64 bg-white border border-gray-200 shadow-sm">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-[#00A4E4] mb-4"></div>
+      <span className="text-[#00A4E4] font-bold uppercase tracking-widest text-xs">Cargando información...</span>
+    </div>
+  );
   if (!Array.isArray(datos)) return <div className="p-6 border-l-4 border-red-500 bg-red-50">Error de Sistema</div>;
-  if (datos.length === 0) return <div className="text-center text-gray-500 p-10 mt-6 border border-gray-200 bg-gray-50">No hay registros.</div>;
+  if (datos.length === 0) return (
+    <div className="flex flex-col items-center justify-center p-16 mt-6 border border-gray-200 bg-white shadow-sm">
+      <svg className="w-16 h-16 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+      <span className="text-[#000638] font-bold uppercase tracking-widest text-sm">No hay registros</span>
+      <p className="text-gray-400 text-xs mt-2">Ajusta los filtros para encontrar información.</p>
+    </div>
+  );
 
   const totalPaginas = Math.ceil(datos.length / filasPorPagina);
   const indiceUltimaFila = paginaActual * filasPorPagina;

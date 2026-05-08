@@ -1,5 +1,5 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { obtenerTextoEstatus, convertirAMXN } from '../utils/diccionarios';
+import { obtenerTextoEstatus, convertirAMXN, formatoDinero } from '../utils/diccionarios';
 import { useMemo } from 'react';
 
 export function GraficaPagos({ datos, tasas }) {
@@ -19,7 +19,7 @@ export function GraficaPagos({ datos, tasas }) {
     return Object.values(agrupados).sort((a, b) => b.total - a.total);
   }, [datos, tasas]);
 
-  const formatoDinero = (monto) => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(monto);
+
   const formatoEjeY = (valor) => valor >= 1000000 ? `$${(valor / 1000000).toFixed(1)}M` : valor >= 1000 ? `$${(valor / 1000).toFixed(0)}K` : `$${valor}`;
 
   const CustomTooltip = ({ active, payload, label }) => {

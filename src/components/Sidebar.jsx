@@ -83,6 +83,14 @@ export function Sidebar({ onGenerarReporte }) {
     })
   }), []);
 
+  const limpiarFiltros = () => {
+    setSelAnio("2026");
+    setSelMeses([]);
+    setSelClientes([]);
+    setSelCompradores([]);
+    setSelEstatus([]);
+  };
+
   return (
     //  CAMBIO PRINCIPAL: Fondo blanco puro con línea separadora gris a la derecha
     <div className={`h-screen bg-white border-r border-gray-200 flex flex-col z-20 overflow-y-auto overflow-x-hidden custom-scrollbar shrink-0 transition-all duration-300 ${isOpen ? 'w-[340px] p-8' : 'w-[80px] p-4 items-center'}`}>
@@ -96,7 +104,7 @@ export function Sidebar({ onGenerarReporte }) {
                 alt="Logo ISS"
                 className="h-14 w-auto object-contain"
               />
-              <span className="text-[#000638] text-3xl font-light tracking-tight">Pagos</span>
+              <span className="text-[#000638] text-3xl font-light tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>Pagos</span>
             </div>
             {/* Línea cyan decorativa */}
             <div className="h-1 w-22 bg-[#00A4E4] mt-4"></div>
@@ -157,21 +165,37 @@ export function Sidebar({ onGenerarReporte }) {
         </div>
       </div>
 
-      {/* BOTÓN: Inicia Azul Oscuro, cambia a Cyan en Hover */}
+      {/* BOTONES: Aplicar y Limpiar */}
       {isOpen ? (
-        <button
-          onClick={() => onGenerarReporte({ anio: selAnio, meses: selMeses, clientes: selClientes, compradores: selCompradores, estatus: selEstatus })}
-          className="mt-8 w-full py-4 bg-[#000638] hover:bg-[#00A4E4] transition-colors duration-300 text-white font-bold text-sm uppercase tracking-widest rounded-sm">
-          Aplicar Filtros
-        </button>
+        <div className="mt-8 flex flex-col gap-3">
+          <button
+            onClick={() => onGenerarReporte({ anio: selAnio, meses: selMeses, clientes: selClientes, compradores: selCompradores, estatus: selEstatus })}
+            className="w-full py-4 bg-[#000638] hover:bg-[#00A4E4] transition-colors duration-300 text-white font-bold text-sm uppercase tracking-widest rounded-sm shadow-md hover:shadow-lg">
+            Aplicar Filtros
+          </button>
+          <button
+            onClick={limpiarFiltros}
+            className="w-full py-3 bg-white border border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-colors duration-300 text-gray-600 font-bold text-xs uppercase tracking-widest rounded-sm">
+            Limpiar Filtros
+          </button>
+        </div>
       ) : (
-        <button
-          onClick={() => onGenerarReporte({ anio: selAnio, meses: selMeses, clientes: selClientes, compradores: selCompradores, estatus: selEstatus })}
-          className="mt-auto w-full py-4 bg-[#000638] hover:bg-[#00A4E4] transition-colors duration-300 text-white flex justify-center rounded-sm"
-          title="Aplicar Filtros"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-        </button>
+        <div className="mt-auto flex flex-col gap-3 w-full">
+          <button
+            onClick={() => onGenerarReporte({ anio: selAnio, meses: selMeses, clientes: selClientes, compradores: selCompradores, estatus: selEstatus })}
+            className="w-full py-4 bg-[#000638] hover:bg-[#00A4E4] transition-colors duration-300 text-white flex justify-center rounded-sm shadow-md"
+            title="Aplicar Filtros"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          </button>
+          <button
+            onClick={limpiarFiltros}
+            className="w-full py-4 bg-white border border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-colors duration-300 text-gray-600 flex justify-center rounded-sm"
+            title="Limpiar Filtros"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+          </button>
+        </div>
       )}
     </div>
   );

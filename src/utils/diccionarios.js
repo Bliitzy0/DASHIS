@@ -53,3 +53,6 @@ export const formatoDineroMoneda = (monto, moneda) => {
     currency: codigoMoneda 
   }).format(monto || 0);
 };
+
+// 🚀 3. Función general para MXN
+export const formatoDinero = (monto) => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(monto || 0);

@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { TablaPagos } from './components/TablaPagos';
 import { GraficaPagos } from './components/GraficaPagos';
-import { obtenerTextoEstatus, convertirAMXN } from './utils/diccionarios';
+import { obtenerTextoEstatus, convertirAMXN, formatoDinero } from './utils/diccionarios';
 
 function App() {
   // ESTADO PARA GUARDAR LOS TIPOS DE CAMBIO (Con valores estaticos por si la conexion falla)
@@ -33,9 +33,11 @@ function App() {
   const [datosReporte, setDatosReporte] = useState([]);
   const [cargando, setCargando] = useState(false);
   const [rqSeleccionado, setRqSeleccionado] = useState(null);
+  const [errorApi, setErrorApi] = useState(null);
 
   const generarReporte = async (filtros) => {
     setCargando(true);
+    setErrorApi(null);
     try {
       const params = new URLSearchParams();
       params.append("anio", filtros.anio);
@@ -47,16 +49,17 @@ function App() {
 
 
       const res = await fetch(`http://10.52.9.44:8000/api/reporte?${params.toString()}`);
+      if (!res.ok) throw new Error("Error en la respuesta del servidor");
       const data = await res.json();
       setDatosReporte(data.registros);
     } catch (error) {
       console.error("Error al generar reporte:", error);
-      alert("Hubo un error de conexión.");
+      setErrorApi("No se pudo conectar con el servidor. Por favor, intenta más tarde.");
     }
     setCargando(false);
   };
 
-  const formatoDinero = (monto) => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(monto || 0);
+
   // AHORA LA TARJETA SUMA TODO CONVERTIDO A MXN
   const costoTotal = useMemo(() => {
     return datosReporte.reduce((acc, fila) => {
@@ -71,6 +74,21 @@ function App() {
 
       <div className="flex-1 p-10 overflow-y-auto custom-scrollbar">
         <h1 className="text-4xl font-light text-[#000638] mb-10 tracking-tight">Dashboard de <span className="font-bold">requisiciones</span></h1>
+
+        {errorApi && (
+          <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-8 shadow-sm">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-red-700 font-bold">{errorApi}</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {datosReporte.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -101,7 +119,7 @@ function App() {
 
       {/* MODAL TIPO DOCUMENTO OFICIAL */}
       {rqSeleccionado && (
-        <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 p-4 transition-all">
+        <div className="fixed inset-0 bg-[#000638]/40 backdrop-blur-md flex justify-center items-center z-50 p-4 transition-all">
           <div className="bg-white w-full max-w-3xl rounded-sm shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
             {/* Cabecera plana azul oscuro */}
             <div className="bg-[#000638] text-white px-8 py-6 flex justify-between items-center border-b-4 border-[#00A4E4]">
@@ -124,11 +142,11 @@ function App() {
               <div><span className="font-bold block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Clasificación RQ</span> {rqSeleccionado.TIPORQ || '-'}</div>
               <div><span className="font-bold block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Tipo de Compra</span> {rqSeleccionado.TIPOCOMPRA || '-'}</div>
 
-              <div className="col-span-2"><span className="font-bold block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Entidad Cliente</span> {rqSeleccionado.NOMCLIENT}</div>
-              <div className="col-span-2"><span className="font-bold block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Comprador</span> {rqSeleccionado.CTACORREO}</div>
-
-              <div className="col-span-2"><span className="font-bold block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Solicitante</span> {rqSeleccionado.SOLICITANTE || '-'} <span className="text-gray-500">({rqSeleccionado.CORREOSOLIC || '-'})</span></div>
-
+              <div><span className="font-bold block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Entidad Cliente</span> {rqSeleccionado.NOMCLIENT}</div>
+              <div><span className="font-bold block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Comprador</span> {rqSeleccionado.CTACORREO}</div>
+              
+              <div><span className="font-bold block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Solicitante</span> {rqSeleccionado.SOLICITANTE || '-'}</div>
+              <div><span className="font-bold block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Correo Solicitante</span> {rqSeleccionado.CORREOSOLIC || '-'}</div>
 
               <div><span className="font-bold block text-[10px] text-[#00A4E4] uppercase tracking-widest mb-1">JOB</span> <span className="font-bold text-lg">{rqSeleccionado.JOB || '-'}</span></div>
               <div><span className="font-bold block text-[10px] text-[#00A4E4] uppercase tracking-widest mb-1">JOB TASK</span> <span className="font-bold text-lg">{rqSeleccionado.JOBTASK || '-'}</span></div>
