@@ -20,7 +20,7 @@ export function Sidebar({ onGenerarReporte }) {
   useEffect(() => {
     const cargarCatalogos = async () => {
       try {
-        const respuesta = await fetch("http://10.52.9.44:8000/api/catalogos");
+        const respuesta = await fetch("http://10.52.18.191:8000/api/catalogos");
         const data = await respuesta.json();
         const formatear = (arr) => arr.map(item => ({ value: item, label: item }));
 
