@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { obtenerTextoEstatus, formatoDineroMoneda } from '../utils/diccionarios';
+import { obtenerTextoEstatus, formatoDineroMoneda, convertirAMXN } from '../utils/diccionarios';
 
-export function TablaPagos({ datos, cargando, alHacerClicFila }) {
+export function TablaPagos({ datos, cargando, alHacerClicFila, estadisticasClientes, tasasCambio }) {
   const [paginaActual, setPaginaActual] = useState(1);
   const filasPorPagina = 100;
 
@@ -68,57 +68,91 @@ export function TablaPagos({ datos, cargando, alHacerClicFila }) {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 font-title">
-            {filasActuales.map((fila, index) => (
-              <tr key={index} onClick={() => alHacerClicFila(fila)} 
-                  className={`cursor-pointer transition-all duration-200 group ${
-                    fila.es_anomalia 
-                      ? 'bg-rose-50/60 hover:bg-rose-100/60 border-l-[3px] border-rose-500' 
-                      : 'bg-transparent hover:bg-slate-50/50'
-                  }`}>
-                
-                {/* Folio */}
-                <td className="px-6 py-3.5 font-bold font-tech text-[#0088ff] group-hover:text-[#0a192f] transition-colors">
-                  {fila.IDFOLIORQ}
-                </td>
+            {filasActuales.map((fila, index) => {
+              let desviacionPorcentaje = 0;
+              let promedioComparativo = 0;
+              let tieneSuficientesDatos = false;
 
-                {/* Fecha */}
-                <td className="px-6 py-3.5 text-slate-400 font-tech">
-                  {soloFecha(fila.FECHARQ)}
-                </td>
+              if (fila.es_anomalia && estadisticasClientes) {
+                const cliente = fila.NOMCLIENT;
+                const montoActualMXN = convertirAMXN(fila.TOTAL, fila.MONERA, tasasCambio);
+                tieneSuficientesDatos = cliente && estadisticasClientes.conteos[cliente] > 1;
+                promedioComparativo = tieneSuficientesDatos 
+                  ? estadisticasClientes.promedios[cliente]
+                  : estadisticasClientes.promedioGeneral;
+                  
+                desviacionPorcentaje = promedioComparativo > 0 
+                  ? ((montoActualMXN - promedioComparativo) / promedioComparativo) * 100 
+                  : 0;
+              }
 
-                {/* Cliente */}
-                <td className="px-6 py-3.5 truncate max-w-[250px] font-semibold text-slate-800" title={fila.NOMCLIENT}>
-                  {fila.NOMCLIENT}
-                </td>
-
-                {/* Monto */}
-                <td className={`px-6 py-3.5 text-right font-bold font-tech ${fila.es_anomalia ? 'text-rose-600 font-extrabold' : 'text-[#0088ff]'}`}>
-                  <div className="flex items-center justify-end gap-1.5">
+              return (
+                <tr key={index} onClick={() => alHacerClicFila(fila)} 
+                    className={`cursor-pointer transition-all duration-200 group ${
+                      fila.es_anomalia 
+                        ? 'bg-rose-50/60 hover:bg-rose-100/60 border-l-[3px] border-rose-500' 
+                        : 'bg-transparent hover:bg-slate-50/50'
+                    }`}>
+                  
+                  {/* Folio */}
+                  <td className="px-6 py-3.5 font-bold font-tech text-[#0088ff] group-hover:text-[#0a192f] transition-colors flex items-center gap-1.5">
                     {fila.es_anomalia && (
-                      <span className="w-2 h-2 rounded-full bg-rose-500 cyber-pulse-red mr-1.5" title="Anomalía de Monto Detectada por IA (Isolation Forest)"></span>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-rose-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" title={`Alerta de Anomalía IA: Desviación de Monto (${desviacionPorcentaje > 0 ? `+${desviacionPorcentaje.toFixed(0)}%` : 'Atípico'})`}>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      </svg>
                     )}
-                    <span>{formatoDineroMoneda(fila.TOTAL, fila.MONERA)}</span>
-                    <span className="text-[9px] text-slate-400 font-semibold ml-1">{fila.MONERA}</span>
-                  </div>
-                </td>
+                    <span>{fila.IDFOLIORQ}</span>
+                  </td>
 
-                {/* Justificación */}
-                <td className="px-6 py-3.5 whitespace-normal text-slate-500 text-[11px] leading-relaxed max-w-[320px]" title={fila.JUSTIFICOMP}>
-                  <div className="line-clamp-2">{fila.JUSTIFICOMP || 'Sin registro técnico.'}</div>
-                </td>
+                  {/* Fecha */}
+                  <td className="px-6 py-3.5 text-slate-400 font-tech">
+                    {soloFecha(fila.FECHARQ)}
+                  </td>
 
-                {/* Estatus */}
-                <td className="px-6 py-3.5">
-                  <span className={`text-[9px] font-bold px-3 py-1 rounded-full tracking-wider font-tech uppercase border ${
-                    fila.es_anomalia 
-                      ? 'bg-rose-50 border-rose-200 text-rose-600'
-                      : 'bg-slate-100 border-slate-200 text-slate-600 group-hover:border-slate-300 group-hover:text-slate-800 transition-colors duration-200'
-                  }`}>
-                    {obtenerTextoEstatus(fila.ESTATUS)}
-                  </span>
-                </td>
-              </tr>
-            ))}
+                  {/* Cliente */}
+                  <td className="px-6 py-3.5 truncate max-w-[250px] font-semibold text-slate-800" title={fila.NOMCLIENT}>
+                    {fila.NOMCLIENT}
+                  </td>
+
+                  {/* Monto */}
+                  <td className={`px-6 py-3.5 text-right font-bold font-tech ${fila.es_anomalia ? 'text-rose-600 font-extrabold' : 'text-[#0088ff]'}`}>
+                    <div className="flex items-center justify-end gap-1.5">
+                      {fila.es_anomalia && (
+                        <>
+                          <span className="w-2 h-2 rounded-full bg-rose-500 cyber-pulse-red mr-1.5" title={`Anomalía de Monto IA: excede el promedio por +${desviacionPorcentaje.toFixed(0)}%`}></span>
+                          {desviacionPorcentaje > 0 && (
+                            <span 
+                              className="text-[9px] bg-rose-100 text-rose-700 font-extrabold font-tech px-2 py-0.5 rounded-full mr-1.5 border border-rose-200/50 hover:bg-rose-200 transition-colors select-none" 
+                              title={`Este monto excede el promedio ${tieneSuficientesDatos ? 'de este cliente' : 'general'} por un ${desviacionPorcentaje.toFixed(1)}%.`}
+                            >
+                              +{desviacionPorcentaje.toFixed(0)}%
+                            </span>
+                          )}
+                        </>
+                      )}
+                      <span>{formatoDineroMoneda(fila.TOTAL, fila.MONERA)}</span>
+                      <span className="text-[9px] text-slate-400 font-semibold ml-1">{fila.MONERA}</span>
+                    </div>
+                  </td>
+
+                  {/* Justificación */}
+                  <td className="px-6 py-3.5 whitespace-normal text-slate-500 text-[11px] leading-relaxed max-w-[320px]" title={fila.JUSTIFICOMP}>
+                    <div className="line-clamp-2">{fila.JUSTIFICOMP || 'Sin registro técnico.'}</div>
+                  </td>
+
+                  {/* Estatus */}
+                  <td className="px-6 py-3.5">
+                    <span className={`text-[9px] font-bold px-3 py-1 rounded-full tracking-wider font-tech uppercase border ${
+                      fila.es_anomalia 
+                        ? 'bg-rose-50 border-rose-200 text-rose-600'
+                        : 'bg-slate-100 border-slate-200 text-slate-600 group-hover:border-slate-300 group-hover:text-slate-800 transition-colors duration-200'
+                    }`}>
+                      {obtenerTextoEstatus(fila.ESTATUS)}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

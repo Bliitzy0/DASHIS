@@ -1,8 +1,17 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { obtenerTextoEstatus, convertirAMXN, formatoDinero } from '../utils/diccionarios';
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 
 export function GraficaPagos({ datos, tasas }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // Un retraso sutil de 150ms asegura que el DOM y el motor de renderizado CSS
+    // del cliente remoto estén completamente asentados antes de inicializar la animación.
+    const timer = setTimeout(() => setMounted(true), 150);
+    return () => clearTimeout(timer);
+  }, []);
+
   if (!datos || datos.length === 0) return null;
 
   const dataGrafica = useMemo(() => {
@@ -60,39 +69,49 @@ export function GraficaPagos({ datos, tasas }) {
       </div>
 
       <div className="h-80 w-full z-10">
-        <ResponsiveContainer width="100%" height="100%" debounce={300}>
-          <BarChart data={dataGrafica} margin={{ top: 10, right: 10, left: 10, bottom: 5 }}>
-            <defs>
-              {/* Gradiente Azul Rey Apple */}
-              <linearGradient id="appleBlueGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#0088ff" stopOpacity={0.8} />
-                <stop offset="100%" stopColor="#0088ff" stopOpacity={0.15} />
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(15, 23, 42, 0.04)" />
-            <XAxis 
-              dataKey="nombre" 
-              tick={{ fontSize: 9, fill: 'rgba(15, 23, 42, 0.5)', fontWeight: 'bold', fontFamily: 'Inter, sans-serif' }} 
-              tickMargin={10}
-              axisLine={{ stroke: 'rgba(15, 23, 42, 0.08)' }}
-            />
-            <YAxis 
-              tickFormatter={formatoEjeY} 
-              tick={{ fontSize: 9, fill: 'rgba(15, 23, 42, 0.5)', fontFamily: 'Inter, sans-serif' }} 
-              width={70}
-              axisLine={{ stroke: 'rgba(15, 23, 42, 0.08)' }}
-            />
-            <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(0, 136, 255, 0.03)' }} />
-            <Bar 
-              dataKey="total" 
-              fill="url(#appleBlueGrad)" 
-              radius={[8, 8, 0, 0]} 
-              barSize={40} 
-              activeBar={{ fill: '#0088ff', stroke: '#ffffff', strokeWidth: 1.5 }} 
-              animationDuration={1200}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+        {!mounted ? (
+          <div className="h-full w-full flex flex-col items-center justify-center bg-white/20 border border-slate-200/30 backdrop-blur-sm rounded-2xl relative overflow-hidden">
+            <div className="absolute w-24 h-24 bg-[#0088ff]/4 blur-xl rounded-full animate-pulse"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#0088ff] mb-4"></div>
+            <span className="text-slate-400 font-bold uppercase tracking-widest text-[9px] font-tech">
+              Preparando Lienzo IA...
+            </span>
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height="100%" debounce={300}>
+            <BarChart data={dataGrafica} margin={{ top: 10, right: 10, left: 10, bottom: 5 }}>
+              <defs>
+                {/* Gradiente Azul Rey Apple */}
+                <linearGradient id="appleBlueGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#0088ff" stopOpacity={0.8} />
+                  <stop offset="100%" stopColor="#0088ff" stopOpacity={0.15} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(15, 23, 42, 0.04)" />
+              <XAxis 
+                dataKey="nombre" 
+                tick={{ fontSize: 9, fill: 'rgba(15, 23, 42, 0.5)', fontWeight: 'bold', fontFamily: 'Inter, sans-serif' }} 
+                tickMargin={10}
+                axisLine={{ stroke: 'rgba(15, 23, 42, 0.08)' }}
+              />
+              <YAxis 
+                tickFormatter={formatoEjeY} 
+                tick={{ fontSize: 9, fill: 'rgba(15, 23, 42, 0.5)', fontFamily: 'Inter, sans-serif' }} 
+                width={70}
+                axisLine={{ stroke: 'rgba(15, 23, 42, 0.08)' }}
+              />
+              <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(0, 136, 255, 0.03)' }} />
+              <Bar 
+                dataKey="total" 
+                fill="url(#appleBlueGrad)" 
+                radius={[8, 8, 0, 0]} 
+                barSize={40} 
+                activeBar={{ fill: '#0088ff', stroke: '#ffffff', strokeWidth: 1.5 }} 
+                animationDuration={1200}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        )}
       </div>
     </div>
   );
