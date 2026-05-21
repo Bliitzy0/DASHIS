@@ -1,1 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 @import "tailwindcss";
+
+:root {
+  font-family: 'Outfit', sans-serif;
+  background-color: #f4f6fa;
+  color: #1e293b;
+}
+
+/* Rejilla de Telemetría Apple Light con Malla de Puntos de Alta Precisión */
+.cyber-grid {
+  background-color: #f4f6fa;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(0, 136, 255, 0.03) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(0, 136, 255, 0.02) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.6) 0%, #f4f6fa 100%),
+    radial-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 24px 24px;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* Paneles de Vidrio Esmerilado Claro de Apple (Apple Glassmorphism) */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 
+    0 8px 30px rgba(15, 23, 42, 0.02),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 1px 2px rgba(15, 23, 42, 0.03);
+  border-radius: 18px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel-heavy {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 
+    0 30px 70px -15px rgba(15, 23, 42, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border-radius: 28px;
+}
+
+/* Efectos de Brillo Neón Minimalistas */
+.neon-border-cyan {
+  border: 1px solid rgba(0, 136, 255, 0.22);
+  box-shadow: 0 4px 20px rgba(0, 136, 255, 0.03);
+}
+
+.neon-glow-cyan-hover {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.neon-glow-cyan-hover:hover {
+  border-color: rgba(0, 136, 255, 0.45);
+  box-shadow: 
+    0 20px 40px -10px rgba(15, 23, 42, 0.06),
+    0 0 20px rgba(0, 136, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+}
+
+.neon-text-cyan {
+  text-shadow: 0 0 10px rgba(0, 136, 255, 0.25);
+}
+
+.neon-text-red {
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.25);
+}
+
+/* Barra de Desplazamiento Minimalista */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.02);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.08);
+  border-radius: 10px;
+  transition: background 0.3s;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 136, 255, 0.5);
+}
+
+/* Fuentes Especializadas */
+.font-tech {
+  font-family: 'Inter', sans-serif;
+}
+
+.font-title {
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Pulsos Cibernéticos Dinámicos */
+@keyframes cyber-pulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+.cyber-pulse-red {
+  color: rgba(239, 68, 68, 0.9);
+  animation: cyber-pulse 2s infinite ease-in-out;
+}
+
+.cyber-pulse-cyan {
+  color: rgba(0, 136, 255, 0.9);
+  animation: cyber-pulse 2s infinite ease-in-out;
+}
+
+/* Animaciones de Entrada Elegante de Apple para Modales */
+@keyframes apple-backdrop-fade-in {
+  from {
+    background-color: rgba(15, 23, 42, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+  }
+  to {
+    background-color: rgba(15, 23, 42, 0.15);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+}
+
+@keyframes apple-modal-scale-up {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-backdrop-in {
+  animation: apple-backdrop-fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-modal-in {
+  animation: apple-modal-scale-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
