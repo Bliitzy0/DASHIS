@@ -1,19 +1,25 @@
 import { useState, useEffect, useMemo } from 'react';
 import Select from 'react-select';
 
-export function DockFiltros({ onGenerarReporte }) {
+export function DockFiltros({
+  onGenerarReporte,
+  selAnio,
+  setSelAnio,
+  selMeses,
+  setSelMeses,
+  selClientes,
+  setSelClientes,
+  selCompradores,
+  setSelCompradores,
+  selEstatus,
+  setSelEstatus
+}) {
   const [clientesMaestros, setClientesMaestros] = useState([]);
   const [compradoresMaestros, setCompradoresMaestros] = useState([]);
   const [clientesVisibles, setClientesVisibles] = useState([]);
   const [compradoresVisibles, setCompradoresVisibles] = useState([]);
   const [opcionesMeses, setOpcionesMeses] = useState([]);
   const [opcionesEstatus, setOpcionesEstatus] = useState([]);
-
-  const [selAnio, setSelAnio] = useState("2026");
-  const [selMeses, setSelMeses] = useState([]);
-  const [selClientes, setSelClientes] = useState([]);
-  const [selCompradores, setSelCompradores] = useState([]);
-  const [selEstatus, setSelEstatus] = useState([]);
 
   // Control de filtro activo en popover flotante
   const [filtroActivo, setFiltroActivo] = useState(null); // 'anio' | 'meses' | 'clientes' | 'compradores' | 'estatus' | null

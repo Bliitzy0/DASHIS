@@ -3,10 +3,18 @@ import { DockFiltros } from './components/DockFiltros';
 import { TablaPagos } from './components/TablaPagos';
 import { GraficaPagos } from './components/GraficaPagos';
 import { obtenerTextoEstatus, convertirAMXN, formatoDinero } from './utils/diccionarios';
+import { AgentChat } from './components/AgentChat';
 
 function App() {
   // ESTADO PARA GUARDAR LOS TIPOS DE CAMBIO
   const [tasasCambio, setTasasCambio] = useState({ USD: 17.50, EUR: 19.00 });
+
+  // ESTADOS DE FILTROS ELEVADOS PARA INTEGRACIÓN CON EL AGENTE IA
+  const [selAnio, setSelAnio] = useState("2026");
+  const [selMeses, setSelMeses] = useState([]);
+  const [selClientes, setSelClientes] = useState([]);
+  const [selCompradores, setSelCompradores] = useState([]);
+  const [selEstatus, setSelEstatus] = useState([]);
 
   // DESCARGAR EL PRECIO REAL AL ABRIR LA PÁGINA
   useEffect(() => {
@@ -120,6 +128,25 @@ function App() {
       setErrorApi("Fallo en la comunicación telemétrica con el servidor. Revisa que el backend esté encendido.");
     }
     setCargando(false);
+  };
+
+  // APLICAR FILTROS ENVIADOS POR EL AGENTE IA
+  const applyAgentFilters = (agentFilters) => {
+    const formatted = {
+      anio: agentFilters.anio ? String(agentFilters.anio) : "2026",
+      meses: (agentFilters.meses || []).map(m => ({ value: m, label: m })),
+      clientes: (agentFilters.clientes || []).map(c => ({ value: c, label: c })),
+      compradores: (agentFilters.compradores || []).map(comp => ({ value: comp, label: comp })),
+      estatus: (agentFilters.estatus || []).map(e => ({ value: e, label: e }))
+    };
+
+    setSelAnio(formatted.anio);
+    setSelMeses(formatted.meses);
+    setSelClientes(formatted.clientes);
+    setSelCompradores(formatted.compradores);
+    setSelEstatus(formatted.estatus);
+
+    generarReporte(formatted);
   };
 
   // SUMA TODO CONVERTIDO A MXN
@@ -541,7 +568,22 @@ function App() {
       )}
 
       {/* DOCK FLOTANTE DE FILTROS MAC STYLE */}
-      <DockFiltros onGenerarReporte={generarReporte} />
+      <DockFiltros 
+        onGenerarReporte={generarReporte}
+        selAnio={selAnio}
+        setSelAnio={setSelAnio}
+        selMeses={selMeses}
+        setSelMeses={setSelMeses}
+        selClientes={selClientes}
+        setSelClientes={setSelClientes}
+        selCompradores={selCompradores}
+        setSelCompradores={setSelCompradores}
+        selEstatus={selEstatus}
+        setSelEstatus={setSelEstatus}
+      />
+
+      {/* CHAT DEL AGENTE DE IA INTEGRADO */}
+      <AgentChat onApplyAgentFilters={applyAgentFilters} />
     </div>
   );
 }
