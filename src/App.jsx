@@ -6,6 +6,28 @@ import { obtenerTextoEstatus, convertirAMXN, formatoDinero } from './utils/dicci
 import { AgentChat } from './components/AgentChat';
 
 function App() {
+  // ESTADO PARA MODO OSCURO
+  const [darkMode, setDarkMode] = useState(() => {
+    const guardado = localStorage.getItem('darkMode');
+    if (guardado !== null) {
+      return guardado === 'true';
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
+
+  // Sincronizar clase .dark en html root
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (darkMode) {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+    localStorage.setItem('darkMode', String(darkMode));
+  }, [darkMode]);
+
+  const toggleDarkMode = () => setDarkMode(!darkMode);
+
   // ESTADO PARA GUARDAR LOS TIPOS DE CAMBIO
   const [tasasCambio, setTasasCambio] = useState({ USD: 17.50, EUR: 19.00 });
 
@@ -51,51 +73,66 @@ function App() {
     }).replace(/^\w/, (c) => c.toUpperCase());
   }, []);
 
-  // Calcular promedios de montos en MXN agrupados por cliente
-  const estadisticasClientes = useMemo(() => {
+  // PROCESAR Y ENRIQUECER LOS REGISTROS CON VALORES PRE-CALCULADOS EN MXN Y DESVIACIONES
+  const datosReporteProcesados = useMemo(() => {
     const sumas = {};
     const conteos = {};
-
+    
     datosReporte.forEach(fila => {
       const cliente = fila.NOMCLIENT;
       if (!cliente) return;
       const totalMXN = convertirAMXN(fila.TOTAL, fila.MONERA, tasasCambio);
-      
       sumas[cliente] = (sumas[cliente] || 0) + totalMXN;
       conteos[cliente] = (conteos[cliente] || 0) + 1;
     });
 
-    const promedios = {};
+    const promediosClientes = {};
     Object.keys(sumas).forEach(cliente => {
-      promedios[cliente] = sumas[cliente] / conteos[cliente];
+      promediosClientes[cliente] = sumas[cliente] / conteos[cliente];
     });
 
-    return {
-      promedios,
-      conteos,
-      promedioGeneral: datosReporte.length > 0
-        ? datosReporte.reduce((acc, f) => acc + convertirAMXN(f.TOTAL, f.MONERA, tasasCambio), 0) / datosReporte.length
-        : 0
-    };
+    const promedioGeneral = datosReporte.length > 0
+      ? datosReporte.reduce((acc, f) => acc + convertirAMXN(f.TOTAL, f.MONERA, tasasCambio), 0) / datosReporte.length
+      : 0;
+
+    return datosReporte.map(fila => {
+      const totalMXN = convertirAMXN(fila.TOTAL, fila.MONERA, tasasCambio);
+      
+      let desviacionPorcentaje = 0;
+      let promedioComparativo = 0;
+      let tieneSuficientesDatos = false;
+
+      if (fila.es_anomalia) {
+        const cliente = fila.NOMCLIENT;
+        tieneSuficientesDatos = cliente && (conteos[cliente] || 0) > 1;
+        promedioComparativo = tieneSuficientesDatos 
+          ? promediosClientes[cliente]
+          : promedioGeneral;
+          
+        desviacionPorcentaje = promedioComparativo > 0 
+          ? ((totalMXN - promedioComparativo) / promedioComparativo) * 100 
+          : 0;
+      }
+
+      return {
+        ...fila,
+        totalMXN,
+        desviacionPorcentaje,
+        promedioComparativo,
+        tieneSuficientesDatos
+      };
+    });
   }, [datosReporte, tasasCambio]);
 
   // Obtener estadísticas de la RQ seleccionada
   const comparativaRq = useMemo(() => {
     if (!rqSeleccionado) return null;
     
-    const cliente = rqSeleccionado.NOMCLIENT;
-    const montoActualMXN = convertirAMXN(rqSeleccionado.TOTAL, rqSeleccionado.MONERA, tasasCambio);
+    const filaEnriquecida = datosReporteProcesados.find(f => f.IDFOLIORQ === rqSeleccionado.IDFOLIORQ) || rqSeleccionado;
     
-    // Obtener promedio del cliente, si no hay suficientes datos (ej. solo 1 registro), usar promedio general
-    const tieneSuficientesDatos = cliente && estadisticasClientes.conteos[cliente] > 1;
-    const promedioComparativo = tieneSuficientesDatos 
-      ? estadisticasClientes.promedios[cliente]
-      : estadisticasClientes.promedioGeneral;
-      
-    const desviacionPorcentaje = promedioComparativo > 0 
-      ? ((montoActualMXN - promedioComparativo) / promedioComparativo) * 100 
-      : 0;
-      
+    const montoActualMXN = filaEnriquecida.totalMXN || convertirAMXN(rqSeleccionado.TOTAL, rqSeleccionado.MONERA, tasasCambio);
+    const promedioComparativo = filaEnriquecida.promedioComparativo || 0;
+    const desviacionPorcentaje = filaEnriquecida.desviacionPorcentaje || 0;
     const sobrecosto = Math.max(0, montoActualMXN - promedioComparativo);
 
     return {
@@ -103,10 +140,10 @@ function App() {
       promedioComparativo,
       desviacionPorcentaje,
       sobrecosto,
-      tipoComparativa: tieneSuficientesDatos ? 'cliente' : 'general',
-      tieneSuficientesDatos
+      tipoComparativa: filaEnriquecida.tieneSuficientesDatos ? 'cliente' : 'general',
+      tieneSuficientesDatos: filaEnriquecida.tieneSuficientesDatos
     };
-  }, [rqSeleccionado, estadisticasClientes, tasasCambio]);
+  }, [rqSeleccionado, datosReporteProcesados, tasasCambio]);
 
   const generarReporte = async (filtros) => {
     setCargando(true);
@@ -151,10 +188,10 @@ function App() {
 
   // SUMA TODO CONVERTIDO A MXN
   const costoTotal = useMemo(() => {
-    return datosReporte.reduce((acc, fila) => {
-      return acc + convertirAMXN(fila.TOTAL, fila.MONERA, tasasCambio);
+    return datosReporteProcesados.reduce((acc, fila) => {
+      return acc + fila.totalMXN;
     }, 0);
-  }, [datosReporte, tasasCambio]);
+  }, [datosReporteProcesados]);
 
   return (
     <div className="flex h-screen cyber-grid overflow-hidden font-title text-slate-800 relative">
@@ -185,6 +222,24 @@ function App() {
 
           {/* Barra de Metadatos y Estatus en Vivo */}
           <div className="flex items-center gap-3">
+            {/* Botón de Modo Oscuro */}
+            <button
+              onClick={toggleDarkMode}
+              className="flex items-center justify-center bg-white/70 border border-slate-200/60 hover:border-slate-300 w-9 h-9 rounded-full backdrop-blur-md shadow-sm transition-all duration-300 cursor-pointer text-slate-500 hover:text-slate-800 hover:scale-105 active:scale-95 p-0"
+              title={darkMode ? "Activar Modo Claro" : "Activar Modo Oscuro"}
+            >
+              {darkMode ? (
+                // Sol
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4.5 w-4.5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+                </svg>
+              ) : (
+                // Luna
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4.5 w-4.5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              )}
+            </button>
             {/* Fecha Local */}
             <div className="hidden lg:flex items-center gap-2 bg-white/70 border border-slate-200/60 px-4 py-2 rounded-full backdrop-blur-md shadow-sm text-slate-500 font-tech text-[10px] font-bold tracking-wide select-none">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -270,20 +325,18 @@ function App() {
         )}
 
         {/* Panel de Gráficas */}
-        {datosReporte.length > 0 && (
+        {datosReporteProcesados.length > 0 && (
           <div className="glass-panel p-8 border border-white/80 hover:border-slate-300/40 shadow-[0_8px_30px_rgba(0,0,0,0.02)] transition-all duration-300">
-            <GraficaPagos datos={datosReporte} tasas={tasasCambio} />
+            <GraficaPagos datos={datosReporteProcesados} />
           </div>
         )}
 
         {/* Panel de Tabla de Requisiciones */}
         <div className="glass-panel border border-white/80 hover:border-slate-300/40 shadow-[0_8px_30px_rgba(0,0,0,0.02)] transition-all duration-300">
           <TablaPagos 
-            datos={datosReporte} 
+            datos={datosReporteProcesados} 
             cargando={cargando} 
             alHacerClicFila={(fila) => setRqSeleccionado(fila)} 
-            estadisticasClientes={estadisticasClientes}
-            tasasCambio={tasasCambio}
           />
         </div>
 

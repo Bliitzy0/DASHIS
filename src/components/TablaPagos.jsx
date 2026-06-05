@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { obtenerTextoEstatus, formatoDineroMoneda, convertirAMXN } from '../utils/diccionarios';
+import { obtenerTextoEstatus, formatoDineroMoneda } from '../utils/diccionarios';
 
-export function TablaPagos({ datos, cargando, alHacerClicFila, estadisticasClientes, tasasCambio }) {
+export function TablaPagos({ datos, cargando, alHacerClicFila }) {
   const [paginaActual, setPaginaActual] = useState(1);
   const filasPorPagina = 100;
 
@@ -69,22 +69,7 @@ export function TablaPagos({ datos, cargando, alHacerClicFila, estadisticasClien
           </thead>
           <tbody className="divide-y divide-slate-100 font-title">
             {filasActuales.map((fila, index) => {
-              let desviacionPorcentaje = 0;
-              let promedioComparativo = 0;
-              let tieneSuficientesDatos = false;
-
-              if (fila.es_anomalia && estadisticasClientes) {
-                const cliente = fila.NOMCLIENT;
-                const montoActualMXN = convertirAMXN(fila.TOTAL, fila.MONERA, tasasCambio);
-                tieneSuficientesDatos = cliente && estadisticasClientes.conteos[cliente] > 1;
-                promedioComparativo = tieneSuficientesDatos 
-                  ? estadisticasClientes.promedios[cliente]
-                  : estadisticasClientes.promedioGeneral;
-                  
-                desviacionPorcentaje = promedioComparativo > 0 
-                  ? ((montoActualMXN - promedioComparativo) / promedioComparativo) * 100 
-                  : 0;
-              }
+              const { desviacionPorcentaje = 0, tieneSuficientesDatos = false } = fila;
 
               return (
                 <tr key={index} onClick={() => alHacerClicFila(fila)} 

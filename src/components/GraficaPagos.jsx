@@ -1,8 +1,8 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { obtenerTextoEstatus, convertirAMXN, formatoDinero } from '../utils/diccionarios';
+import { obtenerTextoEstatus, formatoDinero } from '../utils/diccionarios';
 import { useMemo, useState, useEffect } from 'react';
 
-export function GraficaPagos({ datos, tasas }) {
+export function GraficaPagos({ datos }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -19,14 +19,14 @@ export function GraficaPagos({ datos, tasas }) {
       const estatus = fila.ESTATUS !== null ? fila.ESTATUS : 'N/A';
       if (!acc[estatus]) acc[estatus] = { nombre: estatus, total: 0 };
 
-      // Pasamos las tasas de cambio
-      acc[estatus].total += convertirAMXN(fila.TOTAL, fila.MONERA, tasas);
+      // Usar el valor pre-calculado en pesos (MXN) para máxima eficiencia
+      acc[estatus].total += fila.totalMXN || 0;
 
       return acc;
     }, {});
 
     return Object.values(agrupados).sort((a, b) => b.total - a.total);
-  }, [datos, tasas]);
+  }, [datos]);
 
   const formatoEjeY = (valor) => {
     if (valor >= 1000000) return `$${(valor / 1000000).toFixed(1)}M`;

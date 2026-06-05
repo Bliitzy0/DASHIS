@@ -161,3 +161,123 @@
 .animate-modal-in {
   animation: apple-modal-scale-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* --- OPTIMIZACIÓN GLOBAL MODO OSCURO --- */
+.dark {
+  color-scheme: dark;
+}
+
+.dark body {
+  background-color: #0b0f19;
+  color: #f1f5f9;
+}
+
+.dark .cyber-grid {
+  background-color: #0b0f19;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.03) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(11, 15, 25, 0.75) 0%, #0b0f19 100%),
+    radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+
+.dark .glass-panel {
+  background: rgba(15, 23, 42, 0.45);
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: 
+    0 8px 30px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.dark .glass-panel:hover {
+  border-color: rgba(99, 102, 241, 0.25);
+}
+
+.dark .glass-panel-heavy {
+  background: rgba(15, 23, 42, 0.82);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 30px 70px -15px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Reemplazos de Texto de Tailwind */
+.dark .text-slate-900 { color: #f8fafc !important; }
+.dark .text-slate-800 { color: #f1f5f9 !important; }
+.dark .text-slate-700 { color: #e2e8f0 !important; }
+.dark .text-slate-600 { color: #cbd5e1 !important; }
+.dark .text-slate-500 { color: #94a3b8 !important; }
+.dark .text-slate-400 { color: #64748b !important; }
+
+/* Reemplazos de Fondo y Bordes de Tailwind */
+.dark .bg-white { background-color: #0d121f !important; }
+.dark .bg-white\/70 { background-color: rgba(13, 18, 31, 0.6) !important; }
+.dark .bg-white\/90 { background-color: rgba(13, 18, 31, 0.85) !important; }
+.dark .bg-white\/50 { background-color: rgba(13, 18, 31, 0.45) !important; }
+.dark .bg-slate-50 { background-color: #0f1626 !important; }
+.dark .bg-slate-50\/90 { background-color: rgba(15, 22, 38, 0.9) !important; }
+.dark .bg-slate-50\/80 { background-color: rgba(15, 22, 38, 0.8) !important; }
+.dark .bg-slate-50\/60 { background-color: rgba(15, 22, 38, 0.6) !important; }
+.dark .bg-slate-50\/30 { background-color: rgba(15, 22, 38, 0.3) !important; }
+.dark .border-slate-200\/60 { border-color: rgba(255, 255, 255, 0.06) !important; }
+.dark .border-slate-200\/50 { border-color: rgba(255, 255, 255, 0.06) !important; }
+.dark .border-slate-200\/80 { border-color: rgba(255, 255, 255, 0.06) !important; }
+.dark .border-slate-200 { border-color: rgba(255, 255, 255, 0.08) !important; }
+.dark .border-slate-100 { border-color: rgba(255, 255, 255, 0.04) !important; }
+.dark .border-white\/80 { border-color: rgba(255, 255, 255, 0.06) !important; }
+.dark .border-white\/85 { border-color: rgba(255, 255, 255, 0.06) !important; }
+
+/* Invertir logotipo oscuro en modo oscuro */
+.dark img[alt="Logo ISS"] {
+  filter: invert(1) brightness(2);
+}
+
+/* Divisiones de tabla */
+.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Modales y tablas */
+.dark th {
+  background-color: rgba(15, 22, 38, 0.95) !important;
+  color: #94a3b8 !important;
+}
+.dark tr:hover {
+  background-color: rgba(255, 255, 255, 0.015) !important;
+}
+.dark tr.bg-rose-50\/60:hover {
+  background-color: rgba(244, 63, 94, 0.08) !important;
+}
+
+/* Recharts grid line */
+.dark .recharts-cartesian-grid-horizontal line,
+.dark .recharts-cartesian-grid-vertical line {
+  stroke: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* React Select adaptability in dark mode */
+.dark .react-select__control {
+  background-color: #0d121f !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+.dark .react-select__menu {
+  background-color: #0d121f !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Scrollbar en modo oscuro */
+.dark .custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.01);
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.06);
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.6);
+}
+
+/* Transiciones globales */
+body, .cyber-grid, .glass-panel, .glass-panel-heavy, th, td, p, h1, h3, button, span {
+  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+}
