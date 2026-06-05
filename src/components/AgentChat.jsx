@@ -41,7 +41,7 @@ export function AgentChat({ onApplyAgentFilters }) {
         
         return (
           <div key={idx} className="my-2 border border-slate-200 bg-slate-100/50 rounded-xl p-3 font-mono text-[11px] text-slate-800 overflow-x-auto select-text">
-            {language && <div className="text-[9px] text-[#0088ff] font-bold uppercase tracking-wider mb-1 font-tech">{language}</div>}
+            {language && <div className="text-[9px] text-[#4f46e5] font-bold uppercase tracking-wider mb-1 font-tech">{language}</div>}
             <pre className="whitespace-pre">{code}</pre>
           </div>
         );
@@ -175,7 +175,7 @@ export function AgentChat({ onApplyAgentFilters }) {
           className={`p-4 rounded-full flex items-center justify-center transition-all duration-300 ease-out cursor-pointer hover:scale-110 active:scale-95 shadow-lg ${
             isOpen 
               ? 'bg-rose-500 text-white shadow-rose-500/20 rotate-90' 
-              : 'bg-[#0088ff] text-white shadow-[#0088ff]/25 cyber-pulse-cyan'
+              : 'bg-[#4f46e5] text-white shadow-[#4f46e5]/25 cyber-pulse-indigo'
           }`}
           title="Consultar Agente de IA"
         >
@@ -202,7 +202,7 @@ export function AgentChat({ onApplyAgentFilters }) {
           <div className="bg-slate-50/80 px-6 py-4 border-b border-slate-200/80 flex flex-col gap-2 shrink-0">
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-3">
-                <span className="p-2 bg-[#0088ff]/10 text-[#0088ff] rounded-xl">
+                <span className="p-2 bg-[#4f46e5]/10 text-[#4f46e5] rounded-xl">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
@@ -231,7 +231,7 @@ export function AgentChat({ onApplyAgentFilters }) {
               <select 
                 value={modelName} 
                 onChange={(e) => setModelName(e.target.value)}
-                className="text-[11px] font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg px-2 py-1 outline-none focus:border-[#0088ff] font-tech cursor-pointer transition-colors"
+                className="text-[11px] font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg px-2 py-1 outline-none focus:border-[#4f46e5] font-tech cursor-pointer transition-colors"
               >
                 <option value="gemini-2.5-flash">Gemini 2.5 Flash (Recomendado)</option>
                 <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash-Lite</option>
@@ -287,9 +287,9 @@ export function AgentChat({ onApplyAgentFilters }) {
               <div className="flex flex-col items-start max-w-[80%] self-start">
                 <div className="bg-white border border-slate-200/80 px-4 py-3 rounded-2xl rounded-tl-sm shadow-sm flex items-center gap-2">
                   <div className="flex gap-1">
-                    <span className="w-1.5 h-1.5 bg-[#0088ff] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                    <span className="w-1.5 h-1.5 bg-[#0088ff] rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                    <span className="w-1.5 h-1.5 bg-[#0088ff] rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                    <span className="w-1.5 h-1.5 bg-[#4f46e5] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                    <span className="w-1.5 h-1.5 bg-[#4f46e5] rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                    <span className="w-1.5 h-1.5 bg-[#4f46e5] rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
                   </div>
                   <span className="text-[11px] font-semibold text-slate-450 font-tech">Consultando base de datos...</span>
                 </div>
@@ -306,7 +306,7 @@ export function AgentChat({ onApplyAgentFilters }) {
                 <button
                   key={idx}
                   onClick={() => enviarPregunta(sug)}
-                  className="px-3 py-1 bg-slate-50 hover:bg-slate-100/90 text-[10px] text-slate-500 font-semibold border border-slate-200/70 rounded-full cursor-pointer shrink-0 transition-colors hover:text-[#0088ff] hover:border-[#0088ff]/30 font-title"
+                  className="px-3 py-1 bg-slate-50 hover:bg-slate-100/90 text-[10px] text-slate-500 font-semibold border border-slate-200/70 rounded-full cursor-pointer shrink-0 transition-colors hover:text-[#4f46e5] hover:border-[#4f46e5]/30 font-title"
                 >
                   {sug}
                 </button>
@@ -321,7 +321,7 @@ export function AgentChat({ onApplyAgentFilters }) {
                 onChange={(e) => setPregunta(e.target.value)}
                 placeholder="Escribe tu consulta aquí..."
                 disabled={cargando}
-                className="flex-1 bg-slate-50 border border-slate-200 text-[12px] font-medium rounded-2xl px-4 py-2.5 outline-none focus:border-[#0088ff] focus:bg-white text-slate-800 disabled:opacity-50 transition-all font-title placeholder:text-slate-400"
+                className="flex-1 bg-slate-50 border border-slate-200 text-[12px] font-medium rounded-2xl px-4 py-2.5 outline-none focus:border-[#4f46e5] focus:bg-white text-slate-800 disabled:opacity-50 transition-all font-title placeholder:text-slate-400"
               />
               <button
                 type="submit"

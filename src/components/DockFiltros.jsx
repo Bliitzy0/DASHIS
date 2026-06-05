@@ -80,24 +80,24 @@ export function DockFiltros({
     control: (base, state) => ({
       ...base,
       borderRadius: '12px',
-      borderColor: state.isFocused ? '#0088ff' : '#e2e8f0',
-      boxShadow: state.isFocused ? '0 0 0 3px rgba(0, 136, 255, 0.12)' : 'none',
+      borderColor: state.isFocused ? '#4f46e5' : '#e2e8f0',
+      boxShadow: state.isFocused ? '0 0 0 3px rgba(79, 70, 229, 0.12)' : 'none',
       backgroundColor: '#ffffff',
       minHeight: '38px',
       color: '#0f172a',
       transition: 'all 0.25s ease',
       borderWidth: '1px',
       fontSize: '12px',
-      '&:hover': { borderColor: state.isFocused ? '#0088ff' : '#cbd5e1' }
+      '&:hover': { borderColor: state.isFocused ? '#4f46e5' : '#cbd5e1' }
     }),
     singleValue: (base) => ({ ...base, color: '#0f172a' }),
     input: (base) => ({ ...base, color: '#0f172a' }),
     placeholder: (base) => ({ ...base, color: '#94a3b8' }),
     multiValue: (base) => ({ 
       ...base, 
-      backgroundColor: 'rgba(0, 136, 255, 0.06)', 
+      backgroundColor: 'rgba(79, 70, 229, 0.06)', 
       borderRadius: '6px',
-      border: '1px solid rgba(0, 136, 255, 0.12)'
+      border: '1px solid rgba(79, 70, 229, 0.12)'
     }),
     multiValueLabel: (base) => ({ ...base, color: '#0f172a', fontWeight: '500' }),
     multiValueRemove: (base) => ({ 
@@ -124,16 +124,16 @@ export function DockFiltros({
     option: (base, state) => ({
       ...base,
       backgroundColor: state.isSelected 
-        ? '#0088ff' 
+        ? '#4f46e5' 
         : state.isFocused 
-          ? 'rgba(0, 136, 255, 0.06)' 
+          ? 'rgba(79, 70, 229, 0.06)' 
           : 'transparent',
       color: state.isSelected 
         ? '#ffffff' 
         : '#0f172a',
       cursor: 'pointer',
       fontSize: '12px',
-      ':active': { backgroundColor: 'rgba(0, 136, 255, 0.15)' }
+      ':active': { backgroundColor: 'rgba(79, 70, 229, 0.15)' }
     })
   }), []);
 
@@ -268,8 +268,8 @@ export function DockFiltros({
               onClick={() => toggleFiltro('anio')}
               className={`p-3 rounded-full flex items-center justify-center transition-all duration-300 ease-out cursor-pointer hover:scale-115 hover:-translate-y-1 ${
                 filtroActivo === 'anio' 
-                  ? 'bg-[#0088ff] text-white shadow-md shadow-[#0088ff]/15' 
-                  : 'text-slate-600 hover:text-[#0088ff] hover:bg-slate-100/60'
+                  ? 'bg-[#4f46e5] text-white shadow-md shadow-[#4f46e5]/15' 
+                  : 'text-slate-600 hover:text-[#4f46e5] hover:bg-slate-100/60'
               }`}
               title={`Año: ${selAnio}`}
             >
@@ -289,8 +289,8 @@ export function DockFiltros({
               onClick={() => toggleFiltro('meses')}
               className={`p-3 rounded-full flex items-center justify-center transition-all duration-300 ease-out cursor-pointer hover:scale-115 hover:-translate-y-1 ${
                 filtroActivo === 'meses' 
-                  ? 'bg-[#0088ff] text-white shadow-md shadow-[#0088ff]/15' 
-                  : 'text-slate-600 hover:text-[#0088ff] hover:bg-slate-100/60'
+                  ? 'bg-[#4f46e5] text-white shadow-md shadow-[#4f46e5]/15' 
+                  : 'text-slate-600 hover:text-[#4f46e5] hover:bg-slate-100/60'
               }`}
               title="Filtrar por Meses"
             >
@@ -298,7 +298,7 @@ export function DockFiltros({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
               </svg>
               {selMeses.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#0088ff] text-white text-[8px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center border border-white shadow-sm font-tech">
+                <span className="absolute -top-1 -right-1 bg-[#4f46e5] text-white text-[8px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center border border-white shadow-sm font-tech">
                   {selMeses.length}
                 </span>
               )}
@@ -311,8 +311,8 @@ export function DockFiltros({
               onClick={() => toggleFiltro('clientes')}
               className={`p-3 rounded-full flex items-center justify-center transition-all duration-300 ease-out cursor-pointer hover:scale-115 hover:-translate-y-1 ${
                 filtroActivo === 'clientes' 
-                  ? 'bg-[#0088ff] text-white shadow-md shadow-[#0088ff]/15' 
-                  : 'text-slate-600 hover:text-[#0088ff] hover:bg-slate-100/60'
+                  ? 'bg-[#4f46e5] text-white shadow-md shadow-[#4f46e5]/15' 
+                  : 'text-slate-600 hover:text-[#4f46e5] hover:bg-slate-100/60'
               }`}
               title="Filtrar por Clientes"
             >
@@ -320,7 +320,7 @@ export function DockFiltros({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
               {selClientes.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#0088ff] text-white text-[8px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center border border-white shadow-sm font-tech">
+                <span className="absolute -top-1 -right-1 bg-[#4f46e5] text-white text-[8px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center border border-white shadow-sm font-tech">
                   {selClientes.length}
                 </span>
               )}
@@ -333,8 +333,8 @@ export function DockFiltros({
               onClick={() => toggleFiltro('compradores')}
               className={`p-3 rounded-full flex items-center justify-center transition-all duration-300 ease-out cursor-pointer hover:scale-115 hover:-translate-y-1 ${
                 filtroActivo === 'compradores' 
-                  ? 'bg-[#0088ff] text-white shadow-md shadow-[#0088ff]/15' 
-                  : 'text-slate-600 hover:text-[#0088ff] hover:bg-slate-100/60'
+                  ? 'bg-[#4f46e5] text-white shadow-md shadow-[#4f46e5]/15' 
+                  : 'text-slate-600 hover:text-[#4f46e5] hover:bg-slate-100/60'
               }`}
               title="Filtrar por Compradores"
             >
@@ -342,7 +342,7 @@ export function DockFiltros({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
               {selCompradores.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#0088ff] text-white text-[8px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center border border-white shadow-sm font-tech">
+                <span className="absolute -top-1 -right-1 bg-[#4f46e5] text-white text-[8px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center border border-white shadow-sm font-tech">
                   {selCompradores.length}
                 </span>
               )}
@@ -355,8 +355,8 @@ export function DockFiltros({
               onClick={() => toggleFiltro('estatus')}
               className={`p-3 rounded-full flex items-center justify-center transition-all duration-300 ease-out cursor-pointer hover:scale-115 hover:-translate-y-1 ${
                 filtroActivo === 'estatus' 
-                  ? 'bg-[#0088ff] text-white shadow-md shadow-[#0088ff]/15' 
-                  : 'text-slate-600 hover:text-[#0088ff] hover:bg-slate-100/60'
+                  ? 'bg-[#4f46e5] text-white shadow-md shadow-[#4f46e5]/15' 
+                  : 'text-slate-600 hover:text-[#4f46e5] hover:bg-slate-100/60'
               }`}
               title="Filtrar por Estatus"
             >
@@ -364,7 +364,7 @@ export function DockFiltros({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               {selEstatus.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#0088ff] text-white text-[8px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center border border-white shadow-sm font-tech">
+                <span className="absolute -top-1 -right-1 bg-[#4f46e5] text-white text-[8px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center border border-white shadow-sm font-tech">
                   {selEstatus.length}
                 </span>
               )}

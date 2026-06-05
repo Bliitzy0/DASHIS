@@ -159,7 +159,7 @@ function App() {
   return (
     <div className="flex h-screen cyber-grid overflow-hidden font-title text-slate-800 relative">
       {/* Luces radiales difusas tenues estilo Apple */}
-      <div className="absolute top-[-10%] left-[-5%] w-[45vw] h-[45vw] rounded-full bg-[#0088ff]/2 blur-[140px] pointer-events-none z-0"></div>
+      <div className="absolute top-[-10%] left-[-5%] w-[45vw] h-[45vw] rounded-full bg-[#4f46e5]/3 blur-[140px] pointer-events-none z-0"></div>
       <div className="absolute bottom-[-10%] right-[-5%] w-[45vw] h-[45vw] rounded-full bg-slate-200/40 blur-[140px] pointer-events-none z-0"></div>
 
       <div className="w-full h-full p-10 pb-28 overflow-y-auto custom-scrollbar flex flex-col gap-8 z-10 relative">
@@ -206,8 +206,8 @@ function App() {
             <div className="flex items-center gap-3 bg-white/70 border border-slate-200/60 px-4 py-2 rounded-full backdrop-blur-md shadow-sm select-none">
               <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest font-tech">Conexion DB:</span>
               <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#0088ff] cyber-pulse-cyan"></span>
-                <span className="text-[10px] font-bold text-[#0088ff] font-tech uppercase tracking-wide">Online</span>
+                <span className="w-2 h-2 rounded-full bg-emerald-500 cyber-pulse-emerald"></span>
+                <span className="text-[10px] font-bold text-emerald-600 font-tech uppercase tracking-wide">Online</span>
               </div>
             </div>
           </div>
@@ -228,9 +228,9 @@ function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
             {/* Costo Acumulado */}
-            <div className="glass-panel p-8 relative overflow-hidden neon-border-cyan neon-glow-cyan-hover">
+            <div className="glass-panel p-8 relative overflow-hidden neon-border-indigo neon-glow-indigo-hover">
               {/* Línea decorativa degradada */}
-              <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#0088ff] via-slate-300 to-transparent"></div>
+              <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#4f46e5] via-slate-300 to-transparent"></div>
 
               <div className="flex justify-between items-start">
                 <div>
@@ -241,14 +241,14 @@ function App() {
                     {formatoDinero(costoTotal)}
                   </p>
                 </div>
-                <div className="text-[9px] text-[#0088ff] font-tech font-bold uppercase bg-[#0088ff]/8 border border-[#0088ff]/15 px-2.5 py-0.5 rounded-full tracking-wider">
+                <div className="text-[9px] text-[#4f46e5] font-tech font-bold uppercase bg-[#4f46e5]/8 border border-[#4f46e5]/15 px-2.5 py-0.5 rounded-full tracking-wider">
                   Conversión a MXN
                 </div>
               </div>
             </div>
 
             {/* Total Solicitudes */}
-            <div className="glass-panel p-8 relative overflow-hidden border border-white/80 neon-glow-cyan-hover">
+            <div className="glass-panel p-8 relative overflow-hidden border border-white/80 neon-glow-indigo-hover">
               <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-slate-200 to-transparent"></div>
 
               <div className="flex justify-between items-start">
@@ -298,7 +298,7 @@ function App() {
             {/* Cabecera del Modal */}
             <div className="bg-slate-50/90 px-8 py-6 flex justify-between items-center border-b border-slate-200/80 rounded-t-[28px]">
               <div>
-                <span className="text-[#0088ff] text-[9px] uppercase tracking-widest font-extrabold block mb-1 font-tech">
+                <span className="text-[#4f46e5] text-[9px] uppercase tracking-widest font-extrabold block mb-1 font-tech">
                   Análisis Operativo
                 </span>
                 <h3 className="text-xl font-bold text-slate-900 font-title">

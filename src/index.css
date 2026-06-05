@@ -12,8 +12,8 @@
 .cyber-grid {
   background-color: #f4f6fa;
   background-image: 
-    radial-gradient(circle at 10% 20%, rgba(0, 136, 255, 0.03) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(0, 136, 255, 0.02) 0%, transparent 45%),
+    radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.03) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(79, 70, 229, 0.02) 0%, transparent 45%),
     radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.6) 0%, #f4f6fa 100%),
     radial-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px);
   background-size: 100% 100%, 100% 100%, 100% 100%, 24px 24px;
@@ -47,26 +47,26 @@
 }
 
 /* Efectos de Brillo Neón Minimalistas */
-.neon-border-cyan {
-  border: 1px solid rgba(0, 136, 255, 0.22);
-  box-shadow: 0 4px 20px rgba(0, 136, 255, 0.03);
+.neon-border-indigo {
+  border: 1px solid rgba(79, 70, 229, 0.22);
+  box-shadow: 0 4px 20px rgba(79, 70, 229, 0.03);
 }
 
-.neon-glow-cyan-hover {
+.neon-glow-indigo-hover {
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.neon-glow-cyan-hover:hover {
-  border-color: rgba(0, 136, 255, 0.45);
+.neon-glow-indigo-hover:hover {
+  border-color: rgba(79, 70, 229, 0.45);
   box-shadow: 
     0 20px 40px -10px rgba(15, 23, 42, 0.06),
-    0 0 20px rgba(0, 136, 255, 0.08),
+    0 0 20px rgba(79, 70, 229, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
   transform: translateY(-2px);
 }
 
-.neon-text-cyan {
-  text-shadow: 0 0 10px rgba(0, 136, 255, 0.25);
+.neon-text-indigo {
+  text-shadow: 0 0 10px rgba(79, 70, 229, 0.25);
 }
 
 .neon-text-red {
@@ -90,7 +90,7 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 136, 255, 0.5);
+  background: rgba(79, 70, 229, 0.5);
 }
 
 /* Fuentes Especializadas */
@@ -119,8 +119,13 @@
   animation: cyber-pulse 2s infinite ease-in-out;
 }
 
-.cyber-pulse-cyan {
-  color: rgba(0, 136, 255, 0.9);
+.cyber-pulse-indigo {
+  color: rgba(79, 70, 229, 0.9);
+  animation: cyber-pulse 2s infinite ease-in-out;
+}
+
+.cyber-pulse-emerald {
+  color: rgba(16, 185, 129, 0.9);
   animation: cyber-pulse 2s infinite ease-in-out;
 }
 

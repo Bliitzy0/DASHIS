@@ -8,13 +8,13 @@ export function TablaPagos({ datos, cargando, alHacerClicFila, estadisticasClien
   if (cargando) return (
     <div className="flex flex-col justify-center items-center h-72 bg-white/40 border border-slate-200/50 backdrop-blur-md relative overflow-hidden rounded-2xl">
       {/* Luz sutil de carga de fondo */}
-      <div className="absolute w-40 h-40 bg-[#0088ff]/4 blur-2xl rounded-full animate-pulse"></div>
+      <div className="absolute w-40 h-40 bg-[#4f46e5]/4 blur-2xl rounded-full animate-pulse"></div>
       
       <div className="relative mb-6">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0088ff] z-10 relative"></div>
-        <div className="absolute inset-0 bg-[#0088ff]/10 blur-md rounded-full"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#4f46e5] z-10 relative"></div>
+        <div className="absolute inset-0 bg-[#4f46e5]/10 blur-md rounded-full"></div>
       </div>
-      <span className="text-[#0088ff] font-bold font-tech uppercase tracking-widest text-[10px] neon-text-cyan z-10">
+      <span className="text-[#4f46e5] font-bold font-tech uppercase tracking-widest text-[10px] neon-text-indigo z-10">
         Escaneando Base de Datos...
       </span>
     </div>
@@ -29,10 +29,10 @@ export function TablaPagos({ datos, cargando, alHacerClicFila, estadisticasClien
   if (datos.length === 0) return (
     <div className="flex flex-col items-center justify-center p-16 border border-slate-200/50 bg-white/40 backdrop-blur-sm rounded-2xl">
       <div className="relative mb-4">
-        <svg className="w-12 h-12 text-[#0088ff]/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-12 h-12 text-[#4f46e5]/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
-        <div className="absolute inset-0 bg-[#0088ff]/4 blur-md rounded-full"></div>
+        <div className="absolute inset-0 bg-[#4f46e5]/4 blur-md rounded-full"></div>
       </div>
       <span className="text-slate-400 font-bold uppercase tracking-widest text-[10px] font-tech">
         No se encontraron registros de telemetría
@@ -95,7 +95,7 @@ export function TablaPagos({ datos, cargando, alHacerClicFila, estadisticasClien
                     }`}>
                   
                   {/* Folio */}
-                  <td className="px-6 py-3.5 font-bold font-tech text-[#0088ff] group-hover:text-[#0a192f] transition-colors flex items-center gap-1.5">
+                  <td className="px-6 py-3.5 font-bold font-tech text-[#4f46e5] group-hover:text-[#0a192f] transition-colors flex items-center gap-1.5">
                     {fila.es_anomalia && (
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-rose-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" title={`Alerta de Anomalía IA: Desviación de Monto (${desviacionPorcentaje > 0 ? `+${desviacionPorcentaje.toFixed(0)}%` : 'Atípico'})`}>
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -115,7 +115,7 @@ export function TablaPagos({ datos, cargando, alHacerClicFila, estadisticasClien
                   </td>
 
                   {/* Monto */}
-                  <td className={`px-6 py-3.5 text-right font-bold font-tech ${fila.es_anomalia ? 'text-rose-600 font-extrabold' : 'text-[#0088ff]'}`}>
+                  <td className={`px-6 py-3.5 text-right font-bold font-tech ${fila.es_anomalia ? 'text-rose-600 font-extrabold' : 'text-[#4f46e5]'}`}>
                     <div className="flex items-center justify-end gap-1.5">
                       {fila.es_anomalia && (
                         <>
